@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANEncoder;
@@ -28,7 +30,12 @@ public class Drivetrain extends SubsystemBase {
   _rightMotor2;
 
   //Encodor declaration
-  private CANEncoder _enc;
+  private CANEncoder 
+  _leftEnc,
+  _rightEnc;
+
+  //Gyroscope declaration
+  private ADXRS450_Gyro _gyro;
 
   /**
    * Creates a new Drivetrain.
@@ -39,8 +46,7 @@ public class Drivetrain extends SubsystemBase {
     int right1, //right Motor 1's port
     int right2, //right Motor 2's port
     MotorType type, //type of motor, brushed or brushless
-    IdleMode idleMode, //Mode when the motor is idle, brake or coast
-    int encoderPort //Motor controller that the encoder is connected to
+    IdleMode idleMode //Mode when the motor is idle, brake or coast
   ) {
     //Motor definitions
     _leftMotor1 = new CANSparkMax(left1, type);
@@ -48,7 +54,12 @@ public class Drivetrain extends SubsystemBase {
     _rightMotor1 = new CANSparkMax(right1, type);
     _rightMotor2 = new CANSparkMax(right2, type);
 
-    _enc = new CANSparkMax(encoderPort, type).getEncoder();
+    //Encoder definitions
+    _leftEnc = _leftMotor1.getAlternateEncoder();
+    _rightEnc = _rightMotor1.getAlternateEncoder();
+
+    //Gyroscope definition
+    _gyro = new ADXRS450_Gyro();
   }
 
   /**
@@ -87,6 +98,71 @@ public class Drivetrain extends SubsystemBase {
    */
   public void stop() {
     setSpeed(0, 0);
+  }
+  
+  /**
+   * Displays amount of current (in amps) drawn by each motor
+   */
+  public void displayMotorCurrent() {
+    SmartDashboard.putNumber("Motor " + _leftMotor1.getDeviceId() + " Current:", _leftMotor1.getOutputCurrent());
+    SmartDashboard.putNumber("Motor " + _leftMotor2.getDeviceId() + " Current:", _leftMotor2.getOutputCurrent());
+    SmartDashboard.putNumber("Motor " + _rightMotor1.getDeviceId() + " Current:", _rightMotor1.getOutputCurrent());
+    SmartDashboard.putNumber("Motor " + _rightMotor2.getDeviceId() + " Current:", _rightMotor2.getOutputCurrent());
+  }
+
+  /**
+   * Gets position(in counts by default) from left side encoder
+   */
+  public double getLeftEncPos() {
+    return _leftEnc.getPosition();
+  }
+
+   /**
+   * Gets position(in counts by default) from right side encoder
+   */
+  public double getRightEncPos() {
+    return _rightEnc.getPosition();
+  }
+
+  /**
+   * Gets Velocity (in RPM by default) from left side encoder
+   */
+  public double getLeftEncVelocity() {
+    return _leftEnc.getVelocity();
+  }
+
+  /**
+   * Gets Velocity (in RPM by default) from right side encoder
+   */
+  public double getRightEncVelocity() {
+    return _rightEnc.getVelocity();
+  }
+
+  /**
+   * Sets conversion factor on encoder position
+   * @param fac is the factor by which the encoder position is scaled
+   */
+  public void setEncoderConversionFactor(
+    double fac
+  ) {
+    _leftEnc.setPositionConversionFactor(fac);
+    _rightEnc.setPositionConversionFactor(fac);
+  }
+
+  public void calibrateGyro() {
+    _gyro.calibrate();
+  }
+
+  public void resetGyro() {
+    _gyro.reset();
+  }
+
+  public double getAngle() {
+    return _gyro.getAngle();
+  }
+
+  public double getAngleRate() {
+    return _gyro.getRate();
   }
 
   @Override
