@@ -46,7 +46,8 @@ public class Drivetrain extends SubsystemBase {
     int right1, //right Motor 1's port
     int right2, //right Motor 2's port
     MotorType type, //type of motor, brushed or brushless
-    IdleMode idleMode //Mode when the motor is idle, brake or coast
+    IdleMode idleMode, //Mode when the motor is idle, brake or coast
+    double rampRate
   ) {
     //Motor definitions
     _leftMotor1 = new CANSparkMax(left1, type);
@@ -60,6 +61,9 @@ public class Drivetrain extends SubsystemBase {
 
     //Gyroscope definition
     _gyro = new ADXRS450_Gyro();
+
+    setIdleMode(idleMode);
+    setRampRate(rampRate);
   }
 
   /**
@@ -73,8 +77,8 @@ public class Drivetrain extends SubsystemBase {
     double rightPower 
   ) {
     //Sets the motors to a speed, one of the powers will need to be negative at some point
-    _leftMotor1.set(leftPower);
-    _leftMotor2.set(leftPower);
+    _leftMotor1.set(-leftPower);
+    _leftMotor2.set(-leftPower);
     _rightMotor1.set(rightPower);
     _rightMotor2.set(rightPower);
   }
@@ -90,6 +94,19 @@ public class Drivetrain extends SubsystemBase {
     _leftMotor2.setIdleMode(mode);
     _rightMotor1.setIdleMode(mode);
     _rightMotor2.setIdleMode(mode);
+  }
+
+  /**
+   * Sets ramp rate of drive motors
+   * @param rate time in seconds to go from 0 to 1 power on motor
+   */
+  public void setRampRate(
+    double rate
+  ) {
+    _leftMotor1.setOpenLoopRampRate(rate);
+    _leftMotor2.setOpenLoopRampRate(rate);
+    _rightMotor1.setOpenLoopRampRate(rate);
+    _rightMotor2.setOpenLoopRampRate(rate);
   }
 
   /**
