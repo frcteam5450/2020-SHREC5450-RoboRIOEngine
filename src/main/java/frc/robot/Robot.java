@@ -5,9 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-/** Version 0.0.1
+/** Version 0.0.1 | January 31, 2020
  * Tested and Working
  * -Working Drivetrain
+ */
+
+/** Version 0.0.2 | February 1, 2020
+ * 
  */
 
 package frc.robot;

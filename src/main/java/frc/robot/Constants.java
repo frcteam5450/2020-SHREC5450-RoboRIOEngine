@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -16,20 +20,40 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //Drive motor ports
+    //Drive motor ports and modes
     public static final int
     driveLeft1 = 1,
     driveLeft2 = 2,
     driveRight1 = 3,
     driveRight2 = 4;
+    public static final IdleMode driveIdleMode = IdleMode.kBrake;
+    public static final MotorType driveMotorType = MotorType.kBrushless;
 
+    //Shooter motor ports and modes
+    public static final int
+    shooterFront = 6,
+    shooterBack = 5;
+    public static final MotorType shooterMotorType = MotorType.kBrushless;
+    public static final IdleMode shooterIdleMode = IdleMode.kBrake;
+
+    //Talon motor ports and modes
+    public static final int
+    hopperPort = 1;
+    public static NeutralMode hopperIdleMode = NeutralMode.Brake;
+
+    //Controller ports
     public static final int
     controller1 = 0,
     controller2 = 1;
 
+    //Motor power multipliers
     public static final double
-    currentPower = 0.35;
-
+    driveCurrentPower = .5,
+    shooteBackPower = 1,
+    shooterFrontPower = 1;
+    //ramp up rates
     public static final double
-    driveRampRate = 0.75;
+    driveRampRate = 0.75,
+    hopperRampRate = 0.25,
+    shooterRampRate = 0;
 }

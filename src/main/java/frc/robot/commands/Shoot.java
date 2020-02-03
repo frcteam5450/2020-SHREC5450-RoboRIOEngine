@@ -7,49 +7,44 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
-import static frc.robot.Constants.*;
+import frc.robot.subsystems.Shooter;
 
-public class TeleopDrive extends CommandBase {
+public class Shoot extends CommandBase {
 
-  private Drivetrain _drive;
-  private XboxController _controller;
+  private Shooter _shooter;
+  private double
+  _backSpeed,
+  _frontSpeed;
 
   /**
-   * Creates a new TeleopDrive.
+   * Creates a new Shoot.
    */
-  public TeleopDrive(Drivetrain drive, XboxController controller) {
+  public Shoot(Shooter shooter, double frontSpeed, double backSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drive);
-    _drive = drive;
-    _controller = controller;
+    addRequirements(shooter);
+
+    _shooter = shooter;
+    _backSpeed = backSpeed;
+    _frontSpeed = frontSpeed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    end(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (DriverStation.getInstance().isOperatorControl()) {
-      double leftPower = _controller.getY(Hand.kLeft) * driveCurrentPower;
-      double rightPower = _controller.getY(Hand.kRight) * driveCurrentPower;
-
-      _drive.setSpeed(leftPower, rightPower);
-    }
+    _shooter.setSpeed(_backSpeed, _frontSpeed);
+    _shooter.showCurrent();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _drive.stop();
+    _shooter.stop();
   }
 
   // Returns true when the command should end.
