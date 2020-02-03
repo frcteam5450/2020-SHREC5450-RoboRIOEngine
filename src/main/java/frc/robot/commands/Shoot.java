@@ -38,7 +38,6 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     _shooter.setSpeed(_backSpeed, _frontSpeed);
-    _shooter.showCurrent();
   }
 
   // Called once the command ends or is interrupted.

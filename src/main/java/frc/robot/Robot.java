@@ -11,7 +11,15 @@
  */
 
 /** Version 0.0.2 | February 1, 2020
- * 
+ * Tested and Working Safely
+ * -Working shooter
+ * -Hopper subsystem made, not usable
+ */
+
+/** Version 0.0.3 | February 3, 2020
+ * UNTESTED
+ * -Added exampleSubsystem for reference
+ * -Modified showStats for shooter
  */
 
 package frc.robot;

@@ -66,7 +66,7 @@ public class Shooter extends SubsystemBase {
     _backMotor.setOpenLoopRampRate(rate);
   }
 
-  public void showCurrent() {
+  public void showStats() {
     SmartDashboard.putNumber("Front Shooter Current", _frontMotor.getOutputCurrent());
     SmartDashboard.putNumber("Back Shooter Current", _backMotor.getOutputCurrent());
   }
@@ -74,5 +74,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    showStats();
   }
 }
