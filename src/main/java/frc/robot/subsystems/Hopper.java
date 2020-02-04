@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hopper extends SubsystemBase {
@@ -59,8 +61,14 @@ public class Hopper extends SubsystemBase {
     _motor.configOpenloopRamp(rate);
   }
 
+  public void showStats() {
+    SmartDashboard.putNumber("Hopper Current", _motor.getStatorCurrent());
+    SmartDashboard.putNumber("Hopper Encoder", _motor.getSelectedSensorPosition());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    showStats();
   }
 }
