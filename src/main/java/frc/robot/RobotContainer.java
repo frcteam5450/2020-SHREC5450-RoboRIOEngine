@@ -9,8 +9,6 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
@@ -31,6 +29,7 @@ public class RobotContainer {
   private final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
   private final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
   private final Shooter shooter = new Shooter(shooterFront, shooterBack, shooterMotorType, shooterIdleMode, shooterRampRate);
+  private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -56,7 +55,7 @@ public class RobotContainer {
 
     JoystickButton aButton = new JoystickButton(_controller1, 1);
     JoystickButton bButton = new JoystickButton(_controller1, 2);
-    aButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower)));
+    aButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
     
   }
 

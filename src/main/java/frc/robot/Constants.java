@@ -38,8 +38,12 @@ public final class Constants {
 
     //Talon motor ports and modes
     public static final int
-    hopperPort = 7;
-    public static NeutralMode hopperIdleMode = NeutralMode.Brake;
+    hopperPort = 7,
+    intakePort = 8;
+
+    public static NeutralMode 
+    hopperIdleMode = NeutralMode.Brake,
+    intakeIdleMode = NeutralMode.Brake;
 
     //Controller ports
     public static final int
@@ -48,14 +52,16 @@ public final class Constants {
 
     //Motor power multipliers
     public static final double
-    driveCurrentPower = .5,
-    shooteBackPower = 0.1,
+    driveCurrentPower = 0,
+    shooteBackPower = 0.15,
     shooterFrontPower = 0.7,
-    hopperPower = 0.65;
+    hopperPower = 0.65,
+    intakePower = 0.5;
 
     //ramp up rates
     public static final double
     driveRampRate = 0.75,
     hopperRampRate = 0.25,
-    shooterRampRate = 0;
+    shooterRampRate = 0,
+    intakeRampRate = 0;
 }
