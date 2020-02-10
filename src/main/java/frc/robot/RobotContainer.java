@@ -30,6 +30,7 @@ public class RobotContainer {
   private final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
   private final Shooter shooter = new Shooter(shooterFront, shooterBack, shooterMotorType, shooterIdleMode, shooterRampRate);
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate);
+  //private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -50,9 +51,18 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XboxController _controller1 = new XboxController(controller1);
     drive.setDefaultCommand(new TeleopDrive(drive, _controller1));
+<<<<<<< HEAD
     JoystickButton aButton = new JoystickButton(_controller1, 1);
     JoystickButton bButton = new JoystickButton(_controller1, 2);
     aButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
+=======
+    //compressor.setDefaultCommand(new CompressorCom(compressor));
+    JoystickButton aButton = new JoystickButton(_controller1, 1);
+    JoystickButton bButton = new JoystickButton(_controller1, 2);
+    JoystickButton rbButton = new JoystickButton(_controller1, 6);
+    rbButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
+    
+>>>>>>> 8638290346e05ccb272911fa67324e14bd06a106
   }
 
 
