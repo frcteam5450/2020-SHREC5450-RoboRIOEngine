@@ -32,9 +32,7 @@ public class RobotContainer {
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-
-
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -52,11 +50,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XboxController _controller1 = new XboxController(controller1);
     drive.setDefaultCommand(new TeleopDrive(drive, _controller1));
-
     JoystickButton aButton = new JoystickButton(_controller1, 1);
     JoystickButton bButton = new JoystickButton(_controller1, 2);
     aButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
-    
   }
 
 
