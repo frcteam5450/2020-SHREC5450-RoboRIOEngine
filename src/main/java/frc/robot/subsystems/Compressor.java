@@ -38,7 +38,7 @@ public class Compressor extends SubsystemBase {
   }
   
   public boolean pressureLow(){
-    return _input.get();
+    return !_input.get();
   }
 
   public void showStats(){

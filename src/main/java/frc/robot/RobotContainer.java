@@ -15,6 +15,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -29,8 +30,8 @@ public class RobotContainer {
   private final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
   private final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
   private final Shooter shooter = new Shooter(shooterFront, shooterBack, shooterMotorType, shooterIdleMode, shooterRampRate);
-  private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate);
-  //private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
+  private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
+  private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -51,18 +52,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XboxController _controller1 = new XboxController(controller1);
     drive.setDefaultCommand(new TeleopDrive(drive, _controller1));
-<<<<<<< HEAD
-    JoystickButton aButton = new JoystickButton(_controller1, 1);
-    JoystickButton bButton = new JoystickButton(_controller1, 2);
-    aButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
-=======
-    //compressor.setDefaultCommand(new CompressorCom(compressor));
+    compressor.setDefaultCommand(new CompressorCom(compressor));
     JoystickButton aButton = new JoystickButton(_controller1, 1);
     JoystickButton bButton = new JoystickButton(_controller1, 2);
     JoystickButton rbButton = new JoystickButton(_controller1, 6);
-    rbButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, -hopperPower), new RunIntake(intake, intakePower)));
-    
->>>>>>> 8638290346e05ccb272911fa67324e14bd06a106
+    JoystickButton lbButton = new JoystickButton(_controller1, 5);
+    rbButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, hopperPower)));
+    aButton.whileHeld(new MoveHopper(hopper, -hopperPower));
+    lbButton.whenPressed(new SequentialCommandGroup(new IntakeBall(intake, intakePower), new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
   }
 
 

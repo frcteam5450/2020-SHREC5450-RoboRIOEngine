@@ -61,6 +61,11 @@ public class Hopper extends SubsystemBase {
     _motor.configOpenloopRamp(rate);
   }
 
+  public double getEncPos() {
+    return _motor.getSelectedSensorPosition();
+    
+  }
+
   public void showStats() {
     SmartDashboard.putNumber("Hopper Current", _motor.getStatorCurrent());
     SmartDashboard.putNumber("Hopper Encoder", _motor.getSelectedSensorPosition());

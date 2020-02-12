@@ -20,50 +20,108 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //Drive motor ports and modes
+
+    /**
+     * Drive Motor Constants
+     * Ports, modes, speeds, ramp up rates
+     */
+
+    //Drive motor ports
     public static final int
     driveLeft1 = 1,
     driveLeft2 = 2,
     driveRight1 = 3,
     driveRight2 = 4;
+
+    //Drive motor Modes/types
     public static final IdleMode driveIdleMode = IdleMode.kBrake;
     public static final MotorType driveMotorType = MotorType.kBrushless;
 
-    //Shooter motor ports and modes
+    //Drive motor Speeds and rampUp rates
+    public static final double
+    driveCurrentPower = 0.25,
+    driveRampRate = 0.75;
+
+    /**
+     * Shooter Constants
+     * Ports, modes, speeds, ramp rates
+     */
+
+    //Shooter motor ports
     public static final int
     shooterFront = 6,
     shooterBack = 5;
+
+    //Shooter modes/types
     public static final MotorType shooterMotorType = MotorType.kBrushless;
     public static final IdleMode shooterIdleMode = IdleMode.kBrake;
 
-    //Talon motor ports and modes
-    public static final int
-    hopperPort = 7,
+    //Shooter speeds and ramps
+    public static final double
+    shooteBackPower = 0.25,
+    shooterFrontPower = 0.75,
+    shooterRampRate = 0;
+
+    /**
+     * Hopper Constants
+     * ports, modes, speeds, ramps
+     */
+
+    //Hopper Port
+    public static final int hopperPort = 7;
+
+    //Hopper modes
+    public static final NeutralMode hopperIdleMode = NeutralMode.Brake;
+
+    //Hopper speeds and ramps
+    public static final double
+    hopperPower = 0.5,
+    hopperRampRate = 0.25;
+
+    //Hopper set positions
+    public static final double
+    conversionFactor = 507,
+    indexIncrement = 12 * conversionFactor,
+    k = 0.0005,
+    endThreshold = 70;
+
+    /**
+     * Intake Constants
+     */
+
+    //Intake port
+    public static final int 
     intakePort = 8,
+    photoSensorPort = 1;
+
+    //Intake mode
+    public static NeutralMode 
+    intakeIdleMode = NeutralMode.Brake;
+
+    //Intake speeds and ramps
+    public static final double
+    intakePower = -0.6,
+    intakeRampRate = 0;
+
+    /**
+     * Compressor Constants
+     * ports
+     */
+
+    //Compressor ports
+    public static final int
     compPort = 0,
     pressSwitchPort = 0;
 
-    public static NeutralMode 
-    hopperIdleMode = NeutralMode.Brake,
-    intakeIdleMode = NeutralMode.Brake;
+    /**
+     * Controller Constants
+     * ports, buttons
+     */
 
     //Controller ports
     public static final int
     controller1 = 0,
     controller2 = 1;
-
-    //Motor power multipliers
-    public static final double
-    driveCurrentPower = 0.25,
-    shooteBackPower = 0.25,
-    shooterFrontPower = 0.75,
-    hopperPower = 0.5,
-    intakePower = -0.6;
-
-    //ramp up rates
-    public static final double
-    driveRampRate = 0.75,
-    hopperRampRate = 0.25,
-    shooterRampRate = 0,
-    intakeRampRate = 0;
+    
+    
 }
