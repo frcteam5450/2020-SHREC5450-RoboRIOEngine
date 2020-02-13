@@ -39,7 +39,7 @@ public final class Constants {
 
     //Drive motor Speeds and rampUp rates
     public static final double
-    driveCurrentPower = 0.25,
+    driveCurrentPower = 0.5,
     driveRampRate = 0.75;
 
     /**

@@ -22,6 +22,12 @@
  * -Modified showStats for shooter
  */
 
+/**
+ * Version 0.0.4 | Febuary 12, 2020
+ * -Created compressor subsystem and command
+ * -Created ball indexing commands
+ */
+ 
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
