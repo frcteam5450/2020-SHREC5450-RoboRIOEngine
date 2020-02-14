@@ -32,6 +32,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(shooterFront, shooterBack, shooterMotorType, shooterIdleMode, shooterRampRate);
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
+  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -60,6 +61,7 @@ public class RobotContainer {
     rbButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, hopperPower)));
     aButton.whileHeld(new MoveHopper(hopper, -hopperPower));
     lbButton.whenPressed(new SequentialCommandGroup(new IntakeBall(intake, intakePower), new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
+    bButton.whenPressed(new ToggleClimb(climber));
   }
 
 

@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import frc.robot.subsystems.Climber.ClimberPosition;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -40,7 +42,7 @@ public final class Constants {
     //Drive motor Speeds and rampUp rates
     public static final double
     driveCurrentPower = 0.5,
-    driveRampRate = 0.75;
+    driveRampRate = 1;
 
     /**
      * Shooter Constants
@@ -49,8 +51,8 @@ public final class Constants {
 
     //Shooter motor ports
     public static final int
-    shooterFront = 6,
-    shooterBack = 5;
+    shooterFront = 5,
+    shooterBack = 6;
 
     //Shooter modes/types
     public static final MotorType shooterMotorType = MotorType.kBrushless;
@@ -58,8 +60,8 @@ public final class Constants {
 
     //Shooter speeds and ramps
     public static final double
-    shooteBackPower = 0.25,
-    shooterFrontPower = 0.75,
+    shooteBackPower = 0.75,
+    shooterFrontPower = 0.25,
     shooterRampRate = 0;
 
     /**
@@ -112,6 +114,16 @@ public final class Constants {
     public static final int
     compPort = 0,
     pressSwitchPort = 0;
+
+    /**
+     * Climber Constants
+     */
+    public static final int
+    climberForwardPort = 0,
+    climberReversePort = 1;
+
+    public static final ClimberPosition
+    climberStartPos = ClimberPosition.kUp;
 
     /**
      * Controller Constants

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
 
-  enum ClimberPosition {
+  public enum ClimberPosition {
     kUp,
     kDown
   }
@@ -29,6 +29,12 @@ public class Climber extends SubsystemBase {
     ClimberPosition startPos
   ) {
     _pistons = new DoubleSolenoid(forwardSolenoid, reverseSolenoid);
+    if (startPos == ClimberPosition.kUp) {
+      climberUp();
+    }
+    else {
+      climberDown();
+    }
   }
 
   public void climberUp() {
@@ -37,6 +43,15 @@ public class Climber extends SubsystemBase {
 
   public void climberDown() {
     _pistons.set(Value.kReverse);
+  }
+
+  public ClimberPosition getClimberState() {
+    if (_pistons.get() == Value.kForward) {
+      return ClimberPosition.kUp;
+    }
+    else {
+      return ClimberPosition.kDown;
+    }
   }
 
   @Override
