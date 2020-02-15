@@ -30,8 +30,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class ExampleSubsystem extends /** This class builds off another class, SubsystemBase */ SubsystemBase {
 
   //These are fields - objects or variables we'll use throughout the class. We keep them private so they can't be used by other classes
-  private TalonSRX _someMotor;
-  private DigitalInput _someInput;
+  private TalonSRX someMotor;
+  private DigitalInput someInput;
 
   /**
    * Creates a new ExampleSubsystem, this is a Constructor.
@@ -42,8 +42,8 @@ public class ExampleSubsystem extends /** This class builds off another class, S
     double rampRate, //ramp up rate of motor, time to go from 0 to 100%
     int inputPort //Port digitalInput is on
   ) {
-    _someMotor = new TalonSRX(motorPort);
-    _someInput = new DigitalInput(inputPort);
+    someMotor = new TalonSRX(motorPort);
+    someInput = new DigitalInput(inputPort);
 
     setNeutralMode(motorNeutralMode);
     setRampRate(rampRate);
@@ -56,7 +56,7 @@ public class ExampleSubsystem extends /** This class builds off another class, S
   public void setSpeed(
     double speed
   ) {
-    _someMotor.set(ControlMode.PercentOutput/**We'll use percent output as our set mode */, speed);
+    someMotor.set(ControlMode.PercentOutput/**We'll use percent output as our set mode */, speed);
   }
 
   /**
@@ -66,7 +66,7 @@ public class ExampleSubsystem extends /** This class builds off another class, S
   public void setNeutralMode(
     NeutralMode mode
     ) {
-      _someMotor.setNeutralMode(mode);
+      someMotor.setNeutralMode(mode);
     }
   
   /**
@@ -76,14 +76,14 @@ public class ExampleSubsystem extends /** This class builds off another class, S
   public void setRampRate(
     double rate
   ) {
-    _someMotor.configOpenloopRamp(rate);
+    someMotor.configOpenloopRamp(rate);
   }
 
   /**
    * Shows basic statistics for the subsystem, like output current
    */
   public void showStats() {
-    SmartDashboard.putNumber("Current Pull from ExampleMotor", _someMotor.getStatorCurrent());
+    SmartDashboard.putNumber("Current Pull from ExampleMotor", someMotor.getStatorCurrent());
     SmartDashboard.putBoolean("Example DI Val", getSomeInput());
   }
 
@@ -92,7 +92,7 @@ public class ExampleSubsystem extends /** This class builds off another class, S
    * @return value of input
    */
   public boolean getSomeInput() {
-    return _someInput.get();
+    return someInput.get();
   }
 
   /**

@@ -51,18 +51,23 @@ public final class Constants {
 
     //Shooter motor ports
     public static final int
-    shooterFront = 5,
-    shooterBack = 6;
+    shooterLower = 5,
+    shooterUpper = 6;
 
     //Shooter modes/types
     public static final MotorType shooterMotorType = MotorType.kBrushless;
     public static final IdleMode shooterIdleMode = IdleMode.kBrake;
 
-    //Shooter speeds and ramps
-    public static final double
-    shooteBackPower = 0.75,
-    shooterFrontPower = 0.25,
+    //doubles
+    public static double
+    shooterUpperFF = 0.5,
+    shooterLowerFF = 0.15,
+    shooterLowerKP = 0.000004,
+    shooterUpperKP = 0.000005,
+    shooterLowerRPM = 1500,
+    shooterUpperRPM = 4000,
     shooterRampRate = 0;
+    
 
     /**
      * Hopper Constants
@@ -100,10 +105,11 @@ public final class Constants {
     public static NeutralMode 
     intakeIdleMode = NeutralMode.Brake;
 
-    //Intake speeds and ramps
+    //Intake speeds and ramps and delays
     public static final double
     intakePower = -0.6,
-    intakeRampRate = 0;
+    intakeRampRate = 0,
+    intakeBallIndexDelay = 0.25;
 
     /**
      * Compressor Constants
@@ -132,8 +138,8 @@ public final class Constants {
 
     //Controller ports
     public static final int
-    controller1 = 0,
-    controller2 = 1;
+    controllerPort1 = 0,
+    controllerPort2 = 1;
     
     
 }

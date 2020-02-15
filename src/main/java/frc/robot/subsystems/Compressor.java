@@ -7,15 +7,24 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Compressor extends SubsystemBase {
   private Relay _relay;
   private DigitalInput _input;
+
+  private ShuffleboardTab tab;
+
+  private NetworkTableEntry 
+  pressureLowEntry,
+  relayOnEntry;
+
   /**
    * Creates a new Compressor.
    */
@@ -27,6 +36,11 @@ public class Compressor extends SubsystemBase {
     _input = new DigitalInput(input);
 
     stop();
+
+    tab = Shuffleboard.getTab("Compressor");
+
+    pressureLowEntry = tab.add("Pressure Low?", false).getEntry();
+    relayOnEntry = tab.add("Relay On?", false).getEntry();
   }
   
   public void start(){
@@ -42,8 +56,9 @@ public class Compressor extends SubsystemBase {
   }
 
   public void showStats(){
-    SmartDashboard.putBoolean("Pressure Low", pressureLow());
-    //SmartDashboard.putString("On?", _relay.get());
+    pressureLowEntry.setBoolean(pressureLow());
+    if (_relay.get() == Value.kForward) relayOnEntry.setBoolean(true);
+    else relayOnEntry.setBoolean(false);
   }
 
   @Override

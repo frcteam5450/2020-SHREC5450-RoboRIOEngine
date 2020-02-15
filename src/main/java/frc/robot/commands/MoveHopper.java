@@ -12,17 +12,20 @@ import frc.robot.subsystems.Hopper;
 
 public class MoveHopper extends CommandBase {
 
-  private Hopper _hopper;
-  private double _speed;
+  private Hopper hopper;
+  private double speed;
 
   /**
    * Creates a new MoveHopper.
    */
-  public MoveHopper(Hopper hopper, double speed) {
+  public MoveHopper(
+    Hopper hopper, 
+    double speed
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hopper);
-    _hopper = hopper;
-    _speed = -speed;
+    this.hopper = hopper;
+    this.speed = -speed;
   }
 
   // Called when the command is initially scheduled.
@@ -34,13 +37,13 @@ public class MoveHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _hopper.setSpeed(_speed);
+    hopper.setSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _hopper.stopHopper();
+    hopper.stopHopper();
   }
 
   // Returns true when the command should end.

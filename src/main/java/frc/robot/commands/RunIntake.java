@@ -12,18 +12,21 @@ import frc.robot.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
 
-  private Intake _intake;
-  private double _speed;
+  private Intake intake;
+  private double speed;
 
   /**
    * Creates a new RunIntake.
    */
-  public RunIntake(Intake intake, double speed) {
+  public RunIntake(
+    Intake intake, 
+    double speed
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
 
-    _speed = speed;
-    _intake = intake;
+    this.speed = speed;
+    this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
@@ -34,13 +37,13 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _intake.setSpeed(_speed);
+    intake.setSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _intake.setSpeed(0);
+    intake.setSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -29,7 +29,7 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem(0, null, 0, 0);
   private final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
   private final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
-  private final Shooter shooter = new Shooter(shooterFront, shooterBack, shooterMotorType, shooterIdleMode, shooterRampRate);
+  private final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
   private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos);
@@ -51,16 +51,26 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    XboxController _controller1 = new XboxController(controller1);
-    drive.setDefaultCommand(new TeleopDrive(drive, _controller1));
+    XboxController controller1 = new XboxController(controllerPort1);
+    drive.setDefaultCommand(new TeleopDrive(drive, controller1));
     compressor.setDefaultCommand(new CompressorCom(compressor));
-    JoystickButton aButton = new JoystickButton(_controller1, 1);
-    JoystickButton bButton = new JoystickButton(_controller1, 2);
-    JoystickButton rbButton = new JoystickButton(_controller1, 6);
-    JoystickButton lbButton = new JoystickButton(_controller1, 5);
-    rbButton.whileHeld(new ParallelCommandGroup(new Shoot(shooter, shooterFrontPower, shooteBackPower), new MoveHopper(hopper, hopperPower)));
+    JoystickButton aButton = new JoystickButton(controller1, 1);
+    JoystickButton bButton = new JoystickButton(controller1, 2);
+    JoystickButton rbButton = new JoystickButton(controller1, 6);
+    JoystickButton lbButton = new JoystickButton(controller1, 5);
+
+    rbButton.whileHeld(
+      new ParallelCommandGroup(
+        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP),
+        new MoveHopper(hopper, hopperPower)));
+
     aButton.whileHeld(new MoveHopper(hopper, -hopperPower));
-    lbButton.whenPressed(new SequentialCommandGroup(new IntakeBall(intake, intakePower), new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
+
+    lbButton.whenPressed(
+      new SequentialCommandGroup(
+        new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
+        new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
+
     bButton.whenPressed(new ToggleClimb(climber));
   }
 

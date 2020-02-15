@@ -13,15 +13,17 @@ import frc.robot.subsystems.Climber.ClimberPosition;
 
 public class ToggleClimb extends CommandBase {
 
-  private Climber _climber;
+  private Climber climber;
 
   /**
    * Creates a new ToggleClimb.
    */
-  public ToggleClimb(Climber climber) {
+  public ToggleClimb(
+    Climber climber
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
-    _climber = climber;
+    this.climber = climber;
   }
 
   // Called when the command is initially scheduled.
@@ -32,11 +34,11 @@ public class ToggleClimb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (_climber.getClimberState() == ClimberPosition.kDown) {
-      _climber.climberUp();
+    if (climber.getClimberState() == ClimberPosition.kDown) {
+      climber.climberUp();
     }
     else {
-      _climber.climberDown();
+      climber.climberDown();
     }
   }
 

@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANEncoder;
@@ -37,6 +39,14 @@ public class Drivetrain extends SubsystemBase {
   //Gyroscope declaration
   private ADXRS450_Gyro _gyro;
 
+  private ShuffleboardTab tab;
+
+  private NetworkTableEntry
+  leftMotor1CurrentEntry,
+  leftMotor2CurrentEntry,
+  rightMotor1CurrentEntry,
+  rightMotor2CurrentEntry;
+
   /**
    * Creates a new Drivetrain.
    */
@@ -64,6 +74,13 @@ public class Drivetrain extends SubsystemBase {
 
     setIdleMode(idleMode);
     setRampRate(rampRate);
+
+    this.tab = Shuffleboard.getTab("Drivetrain");
+
+    leftMotor1CurrentEntry = tab.add("Left Motor 1 Current", _leftMotor1.getOutputCurrent()).getEntry();
+    leftMotor2CurrentEntry = tab.add("Left Motor 2 Current", _leftMotor2.getOutputCurrent()).getEntry();
+    rightMotor1CurrentEntry = tab.add("Right Motor 1 Current", _rightMotor1.getOutputCurrent()).getEntry();
+    rightMotor2CurrentEntry = tab.add("Right Motor 2 Current", _rightMotor2.getOutputCurrent()).getEntry();
   }
 
   /**
@@ -121,10 +138,10 @@ public class Drivetrain extends SubsystemBase {
    * Displays amount of current (in amps) drawn by each motor
    */
   public void displayMotorCurrent() {
-    SmartDashboard.putNumber("Motor " + _leftMotor1.getDeviceId() + " Current:", _leftMotor1.getOutputCurrent());
-    SmartDashboard.putNumber("Motor " + _leftMotor2.getDeviceId() + " Current:", _leftMotor2.getOutputCurrent());
-    SmartDashboard.putNumber("Motor " + _rightMotor1.getDeviceId() + " Current:", _rightMotor1.getOutputCurrent());
-    SmartDashboard.putNumber("Motor " + _rightMotor2.getDeviceId() + " Current:", _rightMotor2.getOutputCurrent());
+    leftMotor1CurrentEntry.setDouble(_leftMotor1.getOutputCurrent());
+    leftMotor2CurrentEntry.setDouble(_leftMotor2.getOutputCurrent());
+    rightMotor2CurrentEntry.setDouble(_rightMotor1.getOutputCurrent());
+    rightMotor2CurrentEntry.setDouble(_rightMotor2.getOutputCurrent());
   }
 
   /**

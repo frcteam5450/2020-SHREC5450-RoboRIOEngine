@@ -12,14 +12,14 @@ import frc.robot.subsystems.Hopper;
 
 public class IndexBall extends CommandBase {
 
-  private Hopper _hopper;
+  private Hopper hopper;
   private double
-  _maxSpeed,
-  _posIncrement,
-  _startPos,
-  _setPos,
-  _k,
-  _endThreshold;
+  maxSpeed,
+  posIncrement,
+  startPos,
+  setPos,
+  k,
+  endThreshold;
 
   /**
    * Creates a new IndexBall.
@@ -34,44 +34,44 @@ public class IndexBall extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hopper);
 
-    _hopper = hopper;
-    _maxSpeed = maxSpeed;
-    _posIncrement = posIncrement;
-    _k = k;
-    _endThreshold = endThreshold;
+    this.hopper = hopper;
+    this.maxSpeed = maxSpeed;
+    this.posIncrement = posIncrement;
+    this.k = k;
+    this.endThreshold = endThreshold;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _startPos = _hopper.getEncPos();
-    _setPos = _startPos - _posIncrement;
+    startPos = hopper.getEncPos();
+    setPos = startPos - posIncrement;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double error = _setPos - _hopper.getEncPos();
-    double power = error *_k;
+    double error = setPos - hopper.getEncPos();
+    double power = error *k;
 
-    if (Math.abs(power) > _maxSpeed) {
-      if (power < 0) power = -_maxSpeed;
-      else power = _maxSpeed;
+    if (Math.abs(power) > maxSpeed) {
+      if (power < 0) power = -maxSpeed;
+      else power = maxSpeed;
     }
 
-    _hopper.setSpeed(power);
+    hopper.setSpeed(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _hopper.stopHopper();
+    hopper.stopHopper();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return /*(_hopper.getEncPos() > _setPos - _endThreshold) &&*/ 
-    (_hopper.getEncPos() < _setPos + _endThreshold);
+    return /*(hopper.getEncPos() > setPos - endThreshold) &&*/ 
+    (hopper.getEncPos() < setPos + endThreshold);
   }
 }

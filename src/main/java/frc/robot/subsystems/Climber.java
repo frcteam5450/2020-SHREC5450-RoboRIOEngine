@@ -18,7 +18,7 @@ public class Climber extends SubsystemBase {
     kDown
   }
 
-  private DoubleSolenoid _pistons;
+  private DoubleSolenoid pistons;
 
   /**
    * Creates a new Climber.
@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
     int reverseSolenoid,
     ClimberPosition startPos
   ) {
-    _pistons = new DoubleSolenoid(forwardSolenoid, reverseSolenoid);
+    pistons = new DoubleSolenoid(forwardSolenoid, reverseSolenoid);
     if (startPos == ClimberPosition.kUp) {
       climberUp();
     }
@@ -38,15 +38,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberUp() {
-    _pistons.set(Value.kForward);
+    pistons.set(Value.kForward);
   }
 
   public void climberDown() {
-    _pistons.set(Value.kReverse);
+    pistons.set(Value.kReverse);
   }
 
   public ClimberPosition getClimberState() {
-    if (_pistons.get() == Value.kForward) {
+    if (pistons.get() == Value.kForward) {
       return ClimberPosition.kUp;
     }
     else {

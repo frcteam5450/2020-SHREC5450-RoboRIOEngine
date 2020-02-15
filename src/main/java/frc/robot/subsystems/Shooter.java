@@ -11,39 +11,54 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
   private CANSparkMax 
-  _backMotor,
-  _frontMotor;
+  upperMotor,
+  lowerMotor;
+
+  private ShuffleboardTab tab;
+  private NetworkTableEntry
+  upperMotorCurrent,
+  lowerMotorCurrent,
+  upperMotorVelocity,
+  lowerMotorVelocity;
 
   /**
    * Creates a new Shooter.
    */
   public Shooter(
-    int frontMotorPort,
-    int backMotorPort,
+    int lowerMotorPort,
+    int upperMotorPort,
     MotorType motorType,
     IdleMode idleMode,
     double rampRate
   ) {
     //Motor definitions
-    _backMotor = new CANSparkMax(backMotorPort, motorType);
-    _frontMotor = new CANSparkMax(frontMotorPort, motorType);
+    this.upperMotor = new CANSparkMax(upperMotorPort, motorType);
+    this.lowerMotor = new CANSparkMax(lowerMotorPort, motorType);
 
     setIdleMode(idleMode);
     setRampRate(rampRate);
+    tab = Shuffleboard.getTab("Shooter");
+
+    upperMotorCurrent = tab.add("Upper Motor Current", 0).getEntry();
+    lowerMotorCurrent = tab.add("Lower Motor Current", 0).getEntry();
+    upperMotorVelocity = tab.add("Upper Motor RPM", 0).getEntry();
+    lowerMotorVelocity = tab.add("Lower Motor RPM", 0).getEntry();
   }
 
   public void setSpeed(
-    double backSpeed,
-    double frontSpeed
+    double upperSpeed,
+    double lowerSpeed
   ) {
-    _backMotor.set(backSpeed);
-    _frontMotor.set(frontSpeed);
+    upperMotor.set(upperSpeed);
+    lowerMotor.set(lowerSpeed);
   }
 
   public void stop(
@@ -55,25 +70,35 @@ public class Shooter extends SubsystemBase {
   public void setIdleMode(
     IdleMode mode
   ) {
-    _frontMotor.setIdleMode(mode);
-    _backMotor.setIdleMode(mode);
+    lowerMotor.setIdleMode(mode);
+    upperMotor.setIdleMode(mode);
   }
 
   public void setRampRate(
     double rate
   ) {
-    _frontMotor.setOpenLoopRampRate(rate);
-    _backMotor.setOpenLoopRampRate(rate);
+    lowerMotor.setOpenLoopRampRate(rate);
+    upperMotor.setOpenLoopRampRate(rate);
   }
 
   public void showStats() {
-    SmartDashboard.putNumber("Front Shooter Current", _frontMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Back Shooter Current", _backMotor.getOutputCurrent());
+    upperMotorCurrent.setDouble(upperMotor.getOutputCurrent());
+    lowerMotorCurrent.setDouble(lowerMotor.getOutputCurrent());
+    upperMotorVelocity.setDouble(getVelocityUpperMotor());    
+    lowerMotorVelocity.setDouble(getVelocityLowerMotor());
+  }
+
+  public double getVelocityUpperMotor() {
+    return upperMotor.getEncoder().getVelocity();
+  }
+
+  public double getVelocityLowerMotor() {
+    return lowerMotor.getEncoder().getVelocity();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    //  method will be called once per scheduler run
     showStats();
   }
 }

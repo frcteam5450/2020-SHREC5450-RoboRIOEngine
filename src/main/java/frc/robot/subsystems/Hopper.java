@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Hopper extends SubsystemBase {
 
   //Motor Declaration
-  private TalonSRX _motor;
+  private TalonSRX motor;
 
   /**
    * Creates a new Hopper.
@@ -28,7 +28,7 @@ public class Hopper extends SubsystemBase {
     double rampRate //Ramp up rate of the motor
   ) {
     //motor definition
-    _motor = new TalonSRX(motorPort);
+    motor = new TalonSRX(motorPort);
 
     //sets the idle mode of the motor, coast or brake
     setNeutralMode(neutralMode);
@@ -40,7 +40,7 @@ public class Hopper extends SubsystemBase {
   public void setSpeed(
     double power
   ) {
-    _motor.set(ControlMode.PercentOutput, power);
+    motor.set(ControlMode.PercentOutput, power);
   }
 
   public void stopHopper(
@@ -52,23 +52,23 @@ public class Hopper extends SubsystemBase {
   public void setNeutralMode(
     NeutralMode mode
   ) {
-    _motor.setNeutralMode(mode);
+    motor.setNeutralMode(mode);
   }
 
   public void setRampRate(
     double rate
   ) {
-    _motor.configOpenloopRamp(rate);
+    motor.configOpenloopRamp(rate);
   }
 
   public double getEncPos() {
-    return _motor.getSelectedSensorPosition();
+    return motor.getSelectedSensorPosition();
     
   }
 
   public void showStats() {
-    SmartDashboard.putNumber("Hopper Current", _motor.getStatorCurrent());
-    SmartDashboard.putNumber("Hopper Encoder", _motor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Hopper Current", motor.getStatorCurrent());
+    SmartDashboard.putNumber("Hopper Encoder", motor.getSelectedSensorPosition());
   }
 
   @Override
