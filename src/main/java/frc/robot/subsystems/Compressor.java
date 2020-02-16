@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.CompressorCom;
 
 public class Compressor extends SubsystemBase {
   private Relay _relay;
@@ -41,6 +42,10 @@ public class Compressor extends SubsystemBase {
 
     pressureLowEntry = tab.add("Pressure Low?", false).getEntry();
     relayOnEntry = tab.add("Relay On?", false).getEntry();
+
+    
+    //setDefaultCommand(new CompressorCom(this)); //Simple example of recursion... kind of
+
   }
   
   public void start(){

@@ -62,10 +62,13 @@ public final class Constants {
     public static double
     shooterUpperFF = 0.5,
     shooterLowerFF = 0.15,
+
     shooterLowerKP = 0.000004,
     shooterUpperKP = 0.000005,
-    shooterLowerRPM = 1500,
-    shooterUpperRPM = 4000,
+
+    shooterLowerRPM = 3000,
+    shooterUpperRPM = 3500,
+
     shooterRampRate = 0;
     
 

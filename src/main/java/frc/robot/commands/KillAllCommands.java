@@ -7,35 +7,21 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Drivetrain;
 
-public class IntakeBall extends CommandBase {
-
-  private Intake intake;
-  private double 
-  speed,
-  delay;
-  
-  private boolean wasNoBall = true;
-  private Timer timer;
-
+public class KillAllCommands extends CommandBase {
   /**
-   * Creates a new IntakeBall.
+   * Creates a new KillAllCommands.
    */
-  public IntakeBall(
-    Intake intake, 
-    double speed, 
-    double delay) {
+  public KillAllCommands(
+    Subsystem ... a
+  ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
-
-    this.intake = intake;
-    this.speed = speed;
-    this.delay = delay;
-
-    timer = new Timer();
+    for (int i = 0; i < a.length; i++) {
+      addRequirements(a[i]);
+    }
   }
 
   // Called when the command is initially scheduled.
@@ -46,27 +32,16 @@ public class IntakeBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setSpeed(speed);
-
-    if (intake.getPhotoSensor() && wasNoBall) {
-      timer.start();
-      wasNoBall = false;
-    }
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
-    wasNoBall = true;
-    timer.stop();
-    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > delay;
+    return true;
   }
 }

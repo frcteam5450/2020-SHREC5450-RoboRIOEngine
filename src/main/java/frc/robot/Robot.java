@@ -78,14 +78,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    /*shooterLowerFF = lowerFF.getDouble(0);
-    shooterUpperFF = upperFF.getDouble(0);
-    shooterLowerRPM = lowerRPM.getDouble(0);
-    shooterUpperRPM = upperRPM.getDouble(0);
-    shooterLowerKP = lowerKP.getDouble(0);
-    shooterUpperKP = upperKP.getDouble(0);*/
-
-    //System.out.println(shooterLowerRPM);
   }
 
   /**

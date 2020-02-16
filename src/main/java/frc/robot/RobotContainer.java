@@ -32,7 +32,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
-  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos);
+  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 0, 0, null, null, 0);
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -52,17 +52,22 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     XboxController controller1 = new XboxController(controllerPort1);
+
     drive.setDefaultCommand(new TeleopDrive(drive, controller1));
     compressor.setDefaultCommand(new CompressorCom(compressor));
+
     JoystickButton aButton = new JoystickButton(controller1, 1);
     JoystickButton bButton = new JoystickButton(controller1, 2);
+    JoystickButton xButton = new JoystickButton(controller1, 3);
+    JoystickButton yButton = new JoystickButton(controller1, 4);
     JoystickButton rbButton = new JoystickButton(controller1, 6);
     JoystickButton lbButton = new JoystickButton(controller1, 5);
 
     rbButton.whileHeld(
-      new ParallelCommandGroup(
-        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP),
-        new MoveHopper(hopper, hopperPower)));
+      //new ParallelCommandGroup
+        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP));
+        //new MoveHopper(hopper, hopperPower)));
+    yButton.whileHeld(new MoveHopper(hopper, hopperPower));
 
     aButton.whileHeld(new MoveHopper(hopper, -hopperPower));
 
@@ -72,6 +77,8 @@ public class RobotContainer {
         new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
 
     bButton.whenPressed(new ToggleClimb(climber));
+
+    xButton.whenPressed(new KillAllCommands(drive, hopper, intake, shooter, climber, compressor));
   }
 
 
