@@ -33,7 +33,8 @@ public class RobotContainer {
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
   private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 0, 0, null, null, 0);
-
+  private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
+  private final VisionClient client = new VisionClient(visLightPort);
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   /**
@@ -62,7 +63,7 @@ public class RobotContainer {
     JoystickButton yButton = new JoystickButton(controller1, 4);
     JoystickButton rbButton = new JoystickButton(controller1, 6);
     JoystickButton lbButton = new JoystickButton(controller1, 5);
-
+    JoystickButton startButton = new JoystickButton(controller1, 8);
     rbButton.whileHeld(
       //new ParallelCommandGroup
         new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP));
@@ -79,6 +80,8 @@ public class RobotContainer {
     bButton.whenPressed(new ToggleClimb(climber));
 
     xButton.whenPressed(new KillAllCommands(drive, hopper, intake, shooter, climber, compressor));
+
+    startButton.whileHeld(new RunSpindle(spindleSpeed, spindle));
   }
 
 

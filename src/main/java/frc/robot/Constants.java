@@ -144,5 +144,25 @@ public final class Constants {
     controllerPort1 = 0,
     controllerPort2 = 1;
     
+    /**
+     * SPINDLE CONSTANTS
+     */
+
+    public static final int 
+    spindleMotorPort = 99;
+
+    public static NeutralMode
+    spindleNeutralMode = NeutralMode.Brake;
+
+    public static final double 
+    spindleRampRate = 0,
+    spindleSpeed = .5;
+
+    /**
+     * VISION CONSTANTS
+     */
+
+     public static int 
+     visLightPort = 2;
     
 }
