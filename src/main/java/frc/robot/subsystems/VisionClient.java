@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionClient extends SubsystemBase {
-  private Solenoid visionLight; 
+
+  private Solenoid visionLight;
+  
   /**
    * Creates a new VisionClient.
    */
@@ -19,10 +21,11 @@ public class VisionClient extends SubsystemBase {
   int visLightPort
   ) {
     visionLight = new Solenoid(visLightPort);
-    On();
+
+    on();
   }
 
-  public void On(){
+  public void on(){
     visionLight.set(true);
   }
 
