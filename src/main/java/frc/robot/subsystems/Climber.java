@@ -61,8 +61,8 @@ public class Climber extends SubsystemBase {
     else {
       climberDown();
     }
-    //motor1 = new CANSparkMax(motor1Port, type);
-    //motor2 = new CANSparkMax(motor2Port, type);
+    motor1 = new CANSparkMax(motor1Port, type);
+    motor2 = new CANSparkMax(motor2Port, type);
     this.mode = mode;
     this.rampRate = rampRate;
     this.type = type;

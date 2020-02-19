@@ -44,7 +44,7 @@ public class Compressor extends SubsystemBase {
     relayOnEntry = tab.add("Relay On?", false).getEntry();
 
     
-    //setDefaultCommand(new CompressorCom(this)); //Simple example of recursion... kind of
+    setDefaultCommand(new CompressorCom(this)); //Simple example of recursion... kind of
 
   }
   

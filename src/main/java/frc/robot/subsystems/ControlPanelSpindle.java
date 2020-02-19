@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ControlPanelSpindle extends SubsystemBase {
   private TalonSRX motor;
-  private double rampRate;
-  private NeutralMode mode;
 
   private ShuffleboardTab tab;
 
@@ -33,19 +31,31 @@ public class ControlPanelSpindle extends SubsystemBase {
     NeutralMode mode,
     double rampRate
   ) {
-    this.mode = mode;
-    this.rampRate = rampRate;
 
     tab = Shuffleboard.getTab("Spindle");
 
     motorCurrent = tab.add("Spindle Current", 0).getEntry();
 
+    setNeutralMode(mode);
+    setRampRate(rampRate);
   }
 
   public void setSpeed(
     double motorPower
   ){
     motor.set(ControlMode.PercentOutput, motorPower);
+  }
+
+  public void setNeutralMode (
+    NeutralMode mode
+  ) {
+    motor.setNeutralMode(mode);
+  }
+
+  public void setRampRate(
+    double rate
+  ) {
+    motor.configOpenloopRamp(rate);
   }
 
   public double getEnconder(){

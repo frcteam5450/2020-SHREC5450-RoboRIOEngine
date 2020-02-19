@@ -74,7 +74,7 @@ public class ShootRPM extends CommandBase {
     double outputRPM
   ) {
     double error = setRPM - outputRPM;
-    return error * upperKP;
+    return error * kP;
     
   }
 

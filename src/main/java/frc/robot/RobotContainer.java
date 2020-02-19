@@ -9,6 +9,9 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
@@ -32,8 +35,8 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
-  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 0, 0, null, null, 0);
-  private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
+  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
+  //private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
   private final VisionClient client = new VisionClient(visLightPort);
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -55,7 +58,6 @@ public class RobotContainer {
     XboxController controller1 = new XboxController(controllerPort1);
 
     drive.setDefaultCommand(new TeleopDrive(drive, controller1));
-    compressor.setDefaultCommand(new CompressorCom(compressor));
 
     JoystickButton aButton = new JoystickButton(controller1, 1);
     JoystickButton bButton = new JoystickButton(controller1, 2);
@@ -64,6 +66,7 @@ public class RobotContainer {
     JoystickButton rbButton = new JoystickButton(controller1, 6);
     JoystickButton lbButton = new JoystickButton(controller1, 5);
     JoystickButton startButton = new JoystickButton(controller1, 8);
+    JoystickButton selectButton = new JoystickButton(controller1, 7);
     rbButton.whileHeld(
       //new ParallelCommandGroup
         new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP));
@@ -81,7 +84,10 @@ public class RobotContainer {
 
     xButton.whenPressed(new KillAllCommands(drive, hopper, intake, shooter, climber, compressor));
 
-    startButton.whileHeld(new RunSpindle(spindleSpeed, spindle));
+    //startButton.whileHeld(new RunSpindle(spindleSpeed, spindle));
+
+    startButton.whileHeld(new RunClimber(climber, 0.25));
+    selectButton.whileHeld(new RunClimber(climber, -0.25));
   }
 
 
