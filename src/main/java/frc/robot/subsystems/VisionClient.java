@@ -31,7 +31,7 @@ public class VisionClient extends SubsystemBase {
   ) {
     visionLight = new Solenoid(visLightPort);
 
-    on();
+    //on();
 
     tab = Shuffleboard.getTab("Vision");
     distanceEntry = tab.add("Distance To Target", 0).getEntry();

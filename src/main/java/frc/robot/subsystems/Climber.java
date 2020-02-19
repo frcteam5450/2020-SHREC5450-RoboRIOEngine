@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -69,6 +70,8 @@ public class Climber extends SubsystemBase {
 
     tab = Shuffleboard.getTab("Climber");
 
+    setIdleMode(mode);
+
     motor1CurrentEntry = tab.add("Motor 1 Current", 0).getEntry();
     motor2CurrentEntry = tab.add("Motor 2 Current", 0).getEntry();
     magEncPosEntry = tab.add("Climber Position", 0).getEntry();
@@ -83,22 +86,27 @@ public class Climber extends SubsystemBase {
     motor2.set(motorPower);
   }
 
-  public double getEncoder(){
-    return motor1.getAlternateEncoder().getPosition();
+  /*public double getEncoder(){
+    //return motor1.getAlternateEncoder().getPosition();
+  }*/
+
+  public void setIdleMode(IdleMode mode) {
+    motor1.setIdleMode(mode);
+    motor2.setIdleMode(mode);
   }
 
   public void showStats(){
     motor1CurrentEntry.setDouble(motor1.getOutputCurrent());
     motor2CurrentEntry.setDouble(motor2.getOutputCurrent());
-    magEncPosEntry.setDouble(getEncoder());
+    //magEncPosEntry.setDouble(getEncoder());
   }
 
   public void climberUp() {
-    pistons.set(Value.kForward);
+    pistons.set(Value.kReverse);
   }
 
   public void climberDown() {
-    pistons.set(Value.kReverse);
+    pistons.set(Value.kForward);
   }
 
   public ClimberPosition getClimberState() {
@@ -113,5 +121,6 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    showStats();
   }
 }

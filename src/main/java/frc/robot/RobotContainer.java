@@ -86,8 +86,8 @@ public class RobotContainer {
 
     //startButton.whileHeld(new RunSpindle(spindleSpeed, spindle));
 
-    startButton.whileHeld(new RunClimber(climber, 0.25));
-    selectButton.whileHeld(new RunClimber(climber, -0.25));
+    startButton.whileHeld(new RunClimber(climber, 0.35));
+    selectButton.whileHeld(new RunClimber(climber, -0.35));
   }
 
 
