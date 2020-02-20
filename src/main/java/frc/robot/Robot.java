@@ -35,6 +35,10 @@
  * -Added VisionClient
  */
 
+/**
+ * Version 0.0.8 | February 19, 2020
+ */
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;

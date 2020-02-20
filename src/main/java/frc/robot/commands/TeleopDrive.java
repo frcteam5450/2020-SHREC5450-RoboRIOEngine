@@ -12,24 +12,28 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import static frc.robot.Constants.*;
+import static frc.robot.Variables.*;
 
 public class TeleopDrive extends CommandBase {
 
   private Drivetrain drive;
-  private XboxController controller;
+  private XboxController 
+  controller1,
+  controller2;
 
   /**
    * Creates a new TeleopDrive.
    */
   public TeleopDrive(
     Drivetrain drive, 
-    XboxController controller
+    XboxController controller1,
+    XboxController controller2
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     this.drive = drive;
-    this.controller = controller;
+    this.controller1 = controller1;
+    this.controller2 = controller2;
   }
 
   // Called when the command is initially scheduled.
@@ -42,10 +46,34 @@ public class TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     if (DriverStation.getInstance().isOperatorControl()) {
-      double leftPower = controller.getY(Hand.kLeft) * driveCurrentPower;
-      double rightPower = controller.getY(Hand.kRight) * driveCurrentPower;
+      double leftPower,
+      rightPower,
+      leftPower1,
+      leftPower2,
+      rightPower1,
+      rightPower2;
 
-      drive.setSpeed(leftPower, rightPower);
+      if (!driveSwapped) {
+        leftPower1 = controller1.getY(Hand.kLeft);
+        leftPower2 = controller2.getY(Hand.kLeft);
+        rightPower1 = controller1.getY(Hand.kRight);
+        rightPower2 = controller2.getY(Hand.kRight);
+      }
+
+      else {
+        leftPower1 = controller1.getY(Hand.kRight);
+        leftPower2 = controller2.getY(Hand.kRight);
+        rightPower1 = controller1.getY(Hand.kLeft);
+        rightPower2 = controller2.getY(Hand.kLeft);
+      }
+
+      if (Math.abs(leftPower1) > Math.abs(leftPower2)) leftPower = leftPower1;
+      else leftPower = leftPower2;
+
+      if (Math.abs(rightPower1) > Math.abs(rightPower2)) rightPower = rightPower1;
+      else rightPower = rightPower2;
+
+      drive.setSpeed(leftPower * driveCurrentPower, rightPower * driveCurrentPower);
     }
   }
 

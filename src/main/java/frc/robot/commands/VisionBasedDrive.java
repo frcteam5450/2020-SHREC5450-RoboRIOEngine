@@ -25,6 +25,8 @@ public class VisionBasedDrive extends CommandBase {
   distanceKP,
   angleKP,
   setDistance,
+  distanceThreshold,
+  angleThreshold,
   maxTime;
 
   /**
@@ -37,6 +39,8 @@ public class VisionBasedDrive extends CommandBase {
     double distanceKP,
     double angleKP,
     double setDistance,
+    double distanceThreshold,
+    double angleThreshold,
     double maxTime
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -49,6 +53,8 @@ public class VisionBasedDrive extends CommandBase {
     this.distanceKP = distanceKP;
     this.angleKP = angleKP;
     this.setDistance = setDistance;
+    this.distanceThreshold = distanceThreshold;
+    this.angleThreshold = angleThreshold;
     this.maxTime = maxTime;
 
     timer = new Timer();
@@ -76,17 +82,32 @@ public class VisionBasedDrive extends CommandBase {
 
     double
     leftPower = power,
-    rightPower = power;
+    rightPower = power + getOutput(angleKP, 0, client.getAngleToTarget());
+
+    drive.setSpeed(leftPower, rightPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drive.stop();
+    timer.stop();
+    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double lowerDistanceThreshold = setDistance - distanceThreshold;
+    double upperDistanceThreshold = setDistance + distanceThreshold;
+    double lowerAngleThreshold = 0 - (angleThreshold);
+    double upperAngleThreshold = 0 - angleThreshold;
+    
+    return
+    ((lowerDistanceThreshold < client.getDistanceToTarget() && client.getDistanceToTarget() < upperDistanceThreshold)
+    &&
+    (lowerAngleThreshold < client.getAngleToTarget() && client.getAngleToTarget() < upperAngleThreshold))
+    ||
+    (timer.get() > maxTime);
   }
 }

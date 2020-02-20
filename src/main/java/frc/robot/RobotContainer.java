@@ -36,9 +36,8 @@ public class RobotContainer {
   private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
   private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
-  //private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
+  private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
   private final VisionClient client = new VisionClient(visLightPort);
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -55,39 +54,68 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    XboxController controller1 = new XboxController(controllerPort1);
+    /**
+     * Controller and Button Declarations and Definitions
+     */
 
-    drive.setDefaultCommand(new TeleopDrive(drive, controller1));
+    //Controller declarations/definitions
+    XboxController 
+    driveController = new XboxController(controllerPort1),
+    mechController = new XboxController(controllerPort2);
 
-    JoystickButton aButton = new JoystickButton(controller1, 1);
-    JoystickButton bButton = new JoystickButton(controller1, 2);
-    JoystickButton xButton = new JoystickButton(controller1, 3);
-    JoystickButton yButton = new JoystickButton(controller1, 4);
-    JoystickButton rbButton = new JoystickButton(controller1, 6);
-    JoystickButton lbButton = new JoystickButton(controller1, 5);
-    JoystickButton startButton = new JoystickButton(controller1, 8);
-    JoystickButton selectButton = new JoystickButton(controller1, 7);
-    rbButton.whileHeld(
-      //new ParallelCommandGroup
-        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP));
-        //new MoveHopper(hopper, hopperPower)));
-    yButton.whileHeld(new MoveHopper(hopper, hopperPower));
+    //Drive Controller Button Declarations/definitions
+    JoystickButton 
+    aButton1 = new JoystickButton(driveController, aButton),
+    bButton1 = new JoystickButton(driveController, bButton),
+    xButton1 = new JoystickButton(driveController, xButton),
+    yButton1 = new JoystickButton(driveController, yButton),
+    lbButton1 = new JoystickButton(driveController, lbButton),
+    rbButton1 = new JoystickButton(driveController, rbButton),
+    selectButton1 = new JoystickButton(driveController, selectButton),
+    startButton1 = new JoystickButton(driveController, startButton),
 
-    aButton.whileHeld(new MoveHopper(hopper, -hopperPower));
+    //Mechanism Controller Button Declarations/definitions
+    aButton2 = new JoystickButton(mechController, aButton),
+    bButton2 = new JoystickButton(mechController, bButton),
+    xButton2 = new JoystickButton(mechController, xButton),
+    yButton2 = new JoystickButton(mechController, yButton),
+    lbButton2 = new JoystickButton(mechController, lbButton),
+    rbButton2 = new JoystickButton(mechController, rbButton),
+    selectButton2 = new JoystickButton(mechController, selectButton),
+    startButton2 = new JoystickButton(mechController, startButton);
 
-    lbButton.whenPressed(
-      new SequentialCommandGroup(
-        new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
-        new IndexBall(hopper, hopperPower, indexIncrement, k, endThreshold)));
+    //Default Commands, run in background
+    drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
+    shooter.setDefaultCommand(new TriggerListener(
+      new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
+      new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
+      new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
+      new RunHopper(hopper, hopperPower), 
+      mechController, 
+      triggerThreshold));
 
-    bButton.whenPressed(new ToggleClimb(climber));
+    /**
+     * Drive Controller Commands
+     */
 
-    xButton.whenPressed(new KillAllCommands(drive, hopper, intake, shooter, climber, compressor));
+    //aButton1.whenPressed(new AutoAlign()) DNE
+    bButton1.whenPressed(new SwapDrive());
+    xButton1.whileHeld(new RunSpindle(spindleSpeed, spindle)); //Freely spins ControlPanelSpindle
+    //yButton1.whenPressed(new IncrememntSpindle()); DNE
+    //rbButton1.whenPressed(new ToggleShooterSpeedControl()); DNE
+    selectButton1.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, compressor, climber, spindle, client)); //interrupts all commands by requiring every subsystem
 
-    //startButton.whileHeld(new RunSpindle(spindleSpeed, spindle));
+    /**
+     * Mechanism Controller Commands
+     */
 
-    startButton.whileHeld(new RunClimber(climber, 0.35));
-    selectButton.whileHeld(new RunClimber(climber, -0.35));
+    //aButton2.whenPressed(new LiftSlidesToPosition()); DNE
+    //bButton2.whenPressed(new ClimbToPosition()); DNE
+    xButton2.whileHeld(new RunHopper(hopper, hopperPower)); //Runs hopper manually
+    yButton2.whenPressed(new ToggleClimb(climber)); //Toggles Climber assembly up/down
+    lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
+    rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
+    startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
   }
 
 

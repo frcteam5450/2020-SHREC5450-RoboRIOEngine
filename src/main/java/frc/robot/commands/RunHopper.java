@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hopper;
 
-public class MoveHopper extends CommandBase {
+public class RunHopper extends CommandBase {
 
   private Hopper hopper;
   private double speed;
@@ -18,7 +18,7 @@ public class MoveHopper extends CommandBase {
   /**
    * Creates a new MoveHopper.
    */
-  public MoveHopper(
+  public RunHopper(
     Hopper hopper, 
     double speed
     ) {

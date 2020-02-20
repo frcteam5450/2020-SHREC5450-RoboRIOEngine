@@ -41,8 +41,10 @@ public final class Constants {
 
     //Drive motor Speeds and rampUp rates
     public static final double
-    driveCurrentPower = 0.5,
+    driveInitialPower = 0.5,
     driveRampRate = 1;
+
+    public static final boolean driveSwappedInitially = false;
 
     /**
      * Shooter Constants
@@ -85,7 +87,8 @@ public final class Constants {
 
     //Hopper speeds and ramps
     public static final double
-    hopperPower = 0.5,
+    hopperFF = 0.5,
+    hopperPower = 0.75,
     hopperRampRate = 0.25;
 
     //Hopper set positions
@@ -134,16 +137,9 @@ public final class Constants {
     public static final ClimberPosition
     climberStartPos = ClimberPosition.kUp;
 
-    /**
-     * Controller Constants
-     * ports, buttons
-     */
+    public static final double
+    climberSpeed = 0.35;
 
-    //Controller ports
-    public static final int
-    controllerPort1 = 0,
-    controllerPort2 = 1;
-    
     /**
      * SPINDLE CONSTANTS
      */
@@ -164,5 +160,27 @@ public final class Constants {
 
      public static int 
      visLightPort = 2;
+
+     /**
+     * Controller Constants
+     * ports, buttons
+     */
+
+    //Controller ports
+    public static final int
+    controllerPort1 = 0,
+    controllerPort2 = 1,
+
+    aButton = 1,
+    bButton = 2,
+    xButton = 3,
+    yButton = 4,
+    lbButton = 5,
+    rbButton = 6,
+    selectButton = 7,
+    startButton = 8;
+
+    public static final double
+    triggerThreshold = 0.05;
     
 }

@@ -8,26 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import static frc.robot.Variables.*;
 
-@Deprecated
-public class Shoot extends CommandBase {
-
-  private Shooter _shooter;
-  private double
-  _backSpeed,
-  _frontSpeed;
-
+public class SwapDrive extends CommandBase {
   /**
-   * Creates a new Shoot.
+   * Creates a new SwapDrive.
    */
-  public Shoot(Shooter shooter, double frontSpeed, double backSpeed) {
+  public SwapDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
-
-    _shooter = shooter;
-    _backSpeed = backSpeed;
-    _frontSpeed = frontSpeed;
   }
 
   // Called when the command is initially scheduled.
@@ -38,18 +26,17 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.setSpeed(_backSpeed, _frontSpeed);
+    driveSwapped = !driveSwapped;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _shooter.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
