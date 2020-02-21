@@ -80,7 +80,7 @@ public final class Constants {
      */
 
     //Hopper Port
-    public static final int hopperPort = 7;
+    public static final int hopperPort = 15;
 
     //Hopper modes
     public static final NeutralMode hopperIdleMode = NeutralMode.Brake;

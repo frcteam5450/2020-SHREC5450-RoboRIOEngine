@@ -43,15 +43,6 @@ public class RobotContainer {
   static XboxController
   driveController = new XboxController(controllerPort1),
   mechController = new XboxController(controllerPort2);
-
-  //Background Commands
-  /*public static TriggerListener listener = new TriggerListener(
-    new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
-    new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
-    new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
-    new RunHopper(hopper, hopperPower), 
-    mechController, 
-    triggerThreshold);*/
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -95,14 +86,15 @@ public class RobotContainer {
 
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
-    /*shooter.setDefaultCommand(new TriggerListener(
+    shooter.setDefaultCommand(new TriggerListener(
+      shooter,
+      hopper,
       new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
       new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
       new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
       new RunHopper(hopper, hopperPower),
-      shooter,
       mechController, 
-      triggerThreshold));*/
+      triggerThreshold));
 
     /**
      * Drive Controller Commands
