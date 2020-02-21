@@ -84,9 +84,9 @@ public class Climber extends SubsystemBase {
     motor2.set(motorPower);
   }
 
-  /*public double getEncoder(){
-    //return motor1.getAlternateEncoder().getPosition();
-  }*/
+  public double getEncoder(){
+    return motor1.getAlternateEncoder().getPosition();
+  }
 
   public void setIdleMode(IdleMode mode) {
     motor1.setIdleMode(mode);

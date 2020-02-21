@@ -93,6 +93,7 @@ public class RobotContainer {
       new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
       new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
       new RunHopper(hopper, hopperPower),
+      new Delay(shooterDelay),
       mechController, 
       triggerThreshold));
 
@@ -118,6 +119,7 @@ public class RobotContainer {
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
     rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
+    selectButton2.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, compressor, climber, spindle, client));
   }
 
 

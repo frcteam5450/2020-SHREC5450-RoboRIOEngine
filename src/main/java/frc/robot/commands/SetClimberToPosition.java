@@ -8,70 +8,73 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Climber;
 
-public class IndexBall extends CommandBase {
+public class SetClimberToPosition extends CommandBase {
+  
+  private Climber climber;
 
-  private Hopper hopper;
   private double
-  maxSpeed,
-  posIncrement,
-  startPos,
-  setPos,
-  k,
+  fF,
+  setPosition,
+  kP,
   endThreshold;
 
-  /**
-   * Creates a new IndexBall.
-   */
-  public IndexBall(
-    Hopper hopper,
-    double maxSpeed,
-    double posIncrement,
-    double k,
-    double endThreshold
-  ) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hopper);
 
-    this.hopper = hopper;
-    this.maxSpeed = maxSpeed;
-    this.posIncrement = posIncrement;
-    this.k = k;
+
+
+  /**
+   * Creates a new SetClimberToPosition.
+   */
+  public SetClimberToPosition(
+    Climber climber,
+    double fF,
+    double setPosition,
+    double kP,
+    double endThreshold 
+  ) {
+    this.climber = climber;
+    this.fF = fF;
+    this.setPosition = setPosition;
+    this.kP = kP;
     this.endThreshold = endThreshold;
+    addRequirements(climber);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startPos = hopper.getEncPos();
-    setPos = startPos - posIncrement;
+  }
+
+  public double getOutput(double kP, double setPosition, double eOutput){
+    double error = setPosition - eOutput;
+    return error * kP;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double error = setPos - hopper.getEncPos();
-    double power = error *k;
-
-    if (Math.abs(power) > maxSpeed) {
-      if (power < 0) power = -maxSpeed;
-      else power = maxSpeed;
-    }
-
-    hopper.setSpeed(-power);
+    double power = fF + getOutput(kP, setPosition, climber.getEncoder());
+    climber.setSpeed(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hopper.stopHopper();
+    climber.setSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return /*(hopper.getEncPos() > setPos - endThreshold) &&*/ 
-    (hopper.getEncPos() < setPos + endThreshold);
+    double upperLimit = setPosition + (setPosition * endThreshold);
+    double lowerLimit = setPosition - (setPosition * endThreshold);
+    if (upperLimit > climber.getEncoder() && lowerLimit < climber.getEncoder()){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }

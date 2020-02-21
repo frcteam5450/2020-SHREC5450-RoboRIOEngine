@@ -17,12 +17,9 @@ import frc.robot.subsystems.Shooter;
 
 public class TriggerListener extends CommandBase {
 
-  private IntakeBall intakeBall;
-  private IndexBall indexBall;
-  private ShootRPM shootBalls;
-  private RunHopper runHopper;
-  private Shooter shooter;
-  private Hopper hopper;
+  private SequentialCommandGroup intakeAndIndex;
+  private ParallelCommandGroup shootAndRunHopper;
+  private KillAllCommands kill;
 
   private XboxController controller;
 
@@ -42,19 +39,18 @@ public class TriggerListener extends CommandBase {
     IndexBall indexBall,
     ShootRPM shootBalls,
     RunHopper runHopper,
+    Delay delay,
     XboxController controller,
     double triggerThreshold
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
-    this.intakeBall = intakeBall;
-    this.indexBall = indexBall;
-    this.shootBalls = shootBalls;
-    this.runHopper = runHopper;
     this.controller = controller;
     this.triggerThreshold = triggerThreshold;
-    this.shooter = shooter;
-    this.hopper = hopper;
+
+    intakeAndIndex = new SequentialCommandGroup(intakeBall, indexBall);
+    shootAndRunHopper = new ParallelCommandGroup(new SequentialCommandGroup(delay, runHopper), shootBalls);
+    kill = new KillAllCommands(shooter, hopper);
   }
 
   // Called when the command is initially scheduled.
@@ -65,22 +61,24 @@ public class TriggerListener extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if (controller.getTriggerAxis(Hand.kLeft) > triggerThreshold) {
       ltWasTriggered = true;
     }
     else if (ltWasTriggered) {
       ltWasTriggered = false;
-      new SequentialCommandGroup(intakeBall, indexBall).schedule();
+      intakeAndIndex.schedule();
     }
 
     if (controller.getTriggerAxis(Hand.kRight) > triggerThreshold) {
       rtWasTriggered = true;
-      new ParallelCommandGroup(runHopper, shootBalls).schedule();
+      shootAndRunHopper.schedule();
     }
     else if (rtWasTriggered) {
       rtWasTriggered = false;
-      new KillAllCommands(shooter, hopper);
+      kill.schedule();
     }
+  
   }
 
   // Called once the command ends or is interrupted.

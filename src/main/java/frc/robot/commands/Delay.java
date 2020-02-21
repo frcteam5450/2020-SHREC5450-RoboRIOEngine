@@ -7,71 +7,46 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hopper;
 
-public class IndexBall extends CommandBase {
+public class Delay extends CommandBase {
 
-  private Hopper hopper;
-  private double
-  maxSpeed,
-  posIncrement,
-  startPos,
-  setPos,
-  k,
-  endThreshold;
+  private Timer timer;
+  private double seconds;
 
   /**
-   * Creates a new IndexBall.
+   * Creates a new Delay.
    */
-  public IndexBall(
-    Hopper hopper,
-    double maxSpeed,
-    double posIncrement,
-    double k,
-    double endThreshold
+  public Delay(
+    double seconds
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hopper);
-
-    this.hopper = hopper;
-    this.maxSpeed = maxSpeed;
-    this.posIncrement = posIncrement;
-    this.k = k;
-    this.endThreshold = endThreshold;
+    this.seconds = seconds;
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startPos = hopper.getEncPos();
-    setPos = startPos - posIncrement;
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double error = setPos - hopper.getEncPos();
-    double power = error *k;
-
-    if (Math.abs(power) > maxSpeed) {
-      if (power < 0) power = -maxSpeed;
-      else power = maxSpeed;
-    }
-
-    hopper.setSpeed(-power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hopper.stopHopper();
+    timer.stop();
+    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return /*(hopper.getEncPos() > setPos - endThreshold) &&*/ 
-    (hopper.getEncPos() < setPos + endThreshold);
+    return timer.get() > seconds;
   }
 }

@@ -136,13 +136,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    /*new TriggerListener(
-      new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
-      new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
-      new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP),
-      new RunHopper(hopper, hopperPower), 
-      mechController, 
-      triggerThreshold).schedule();*/
+    
   }
 
   @Override

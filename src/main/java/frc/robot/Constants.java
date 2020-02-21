@@ -62,16 +62,18 @@ public final class Constants {
 
     //doubles
     public static double
-    shooterUpperFF = 0.5,
-    shooterLowerFF = 0.15,
+    shooterUpperFF = 0.25,
+    shooterLowerFF = 0.25,
 
-    shooterLowerKP = 0.000004,
-    shooterUpperKP = 0.000005,
+    shooterLowerKP = 0.0000025,
+    shooterUpperKP = 0.0000025,
 
-    shooterLowerRPM = 3000,
-    shooterUpperRPM = 3500,
+    shooterLowerRPM = 3000, //a robot away from auto line
+    shooterUpperRPM = 2500,
 
-    shooterRampRate = 0;
+    shooterRampRate = 0,
+
+    shooterDelay = 0.75;
     
 
     /**
