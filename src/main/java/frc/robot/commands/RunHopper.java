@@ -25,7 +25,7 @@ public class RunHopper extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hopper);
     this.hopper = hopper;
-    this.speed = -speed;
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.

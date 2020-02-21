@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers.IntegerDeserializer;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -15,7 +14,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -110,7 +108,7 @@ public class Climber extends SubsystemBase {
   }
 
   public ClimberPosition getClimberState() {
-    if (pistons.get() == Value.kForward) {
+    if (pistons.get() == Value.kReverse) {
       return ClimberPosition.kUp;
     }
     else {

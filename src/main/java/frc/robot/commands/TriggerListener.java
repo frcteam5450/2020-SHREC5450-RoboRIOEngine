@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Shooter;
 
 public class TriggerListener extends CommandBase {
 
@@ -36,6 +37,7 @@ public class TriggerListener extends CommandBase {
     IndexBall indexBall,
     ShootRPM shootBalls,
     RunHopper runHopper,
+    Shooter shooter,
     XboxController controller,
     double triggerThreshold
   ) {
@@ -46,6 +48,7 @@ public class TriggerListener extends CommandBase {
     this.runHopper = runHopper;
     this.controller = controller;
     this.triggerThreshold = triggerThreshold;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -66,10 +69,11 @@ public class TriggerListener extends CommandBase {
 
     if (controller.getTriggerAxis(Hand.kRight) > triggerThreshold) {
       rtWasTriggered = true;
+      new ParallelCommandGroup(runHopper, shootBalls).schedule();
     }
     else if (rtWasTriggered) {
       rtWasTriggered = false;
-      new ParallelCommandGroup(runHopper, shootBalls).schedule();
+      
     }
   }
 

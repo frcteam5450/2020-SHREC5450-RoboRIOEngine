@@ -61,10 +61,10 @@ public class TeleopDrive extends CommandBase {
       }
 
       else {
-        leftPower1 = controller1.getY(Hand.kRight);
-        leftPower2 = controller2.getY(Hand.kRight);
-        rightPower1 = controller1.getY(Hand.kLeft);
-        rightPower2 = controller2.getY(Hand.kLeft);
+        leftPower1 = -controller1.getY(Hand.kRight);
+        leftPower2 = -controller2.getY(Hand.kRight);
+        rightPower1 = -controller1.getY(Hand.kLeft);
+        rightPower2 = -controller2.getY(Hand.kLeft);
       }
 
       if (Math.abs(leftPower1) > Math.abs(leftPower2)) leftPower = leftPower1;

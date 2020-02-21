@@ -40,7 +40,7 @@ public class Hopper extends SubsystemBase {
   public void setSpeed(
     double power
   ) {
-    motor.set(ControlMode.PercentOutput, power);
+    motor.set(ControlMode.PercentOutput, -power);
   }
 
   public void stopHopper(

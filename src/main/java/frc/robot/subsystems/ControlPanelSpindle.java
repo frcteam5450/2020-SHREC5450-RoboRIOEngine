@@ -32,6 +32,7 @@ public class ControlPanelSpindle extends SubsystemBase {
     double rampRate
   ) {
 
+    motor = new TalonSRX(motorPort);
     tab = Shuffleboard.getTab("Spindle");
 
     motorCurrent = tab.add("Spindle Current", 0).getEntry();
@@ -58,9 +59,9 @@ public class ControlPanelSpindle extends SubsystemBase {
     motor.configOpenloopRamp(rate);
   }
 
-  public double getEnconder(){
+  /*public double getEnconder(){
     return motor.getSelectedSensorPosition();
-  }
+  }*/
 
   public void showStats(){
     motorCurrent.setDouble(motor.getStatorCurrent());

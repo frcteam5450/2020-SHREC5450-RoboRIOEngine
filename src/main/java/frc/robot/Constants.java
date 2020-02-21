@@ -41,7 +41,7 @@ public final class Constants {
 
     //Drive motor Speeds and rampUp rates
     public static final double
-    driveInitialPower = 0.5,
+    driveInitialPower = 0.35,
     driveRampRate = 1;
 
     public static final boolean driveSwappedInitially = false;
@@ -145,7 +145,7 @@ public final class Constants {
      */
 
     public static final int 
-    spindleMotorPort = 99;
+    spindleMotorPort = 1;
 
     public static NeutralMode
     spindleNeutralMode = NeutralMode.Brake;
@@ -181,6 +181,6 @@ public final class Constants {
     startButton = 8;
 
     public static final double
-    triggerThreshold = 0.05;
+    triggerThreshold = 0.1;
     
 }

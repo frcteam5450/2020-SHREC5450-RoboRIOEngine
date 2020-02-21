@@ -30,14 +30,28 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem(0, null, 0, 0);
-  private final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
-  private final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
-  private final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
-  private final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
-  private final Compressor compressor = new Compressor(compPort, pressSwitchPort);
-  private final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
-  private final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
-  private final VisionClient client = new VisionClient(visLightPort);
+  public static final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
+  public static final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
+  public static final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
+  public static final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
+  public static final Compressor compressor = new Compressor(compPort, pressSwitchPort);
+  public static final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
+  public static final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
+  public static final VisionClient client = new VisionClient(visLightPort);
+
+  //Controller declarations/definitions
+  static XboxController
+  driveController = new XboxController(controllerPort1),
+  mechController = new XboxController(controllerPort2);
+
+  //Background Commands
+  /*public static TriggerListener listener = new TriggerListener(
+    new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
+    new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
+    new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
+    new RunHopper(hopper, hopperPower), 
+    mechController, 
+    triggerThreshold);*/
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -57,11 +71,6 @@ public class RobotContainer {
     /**
      * Controller and Button Declarations and Definitions
      */
-
-    //Controller declarations/definitions
-    XboxController 
-    driveController = new XboxController(controllerPort1),
-    mechController = new XboxController(controllerPort2);
 
     //Drive Controller Button Declarations/definitions
     JoystickButton 
@@ -86,13 +95,14 @@ public class RobotContainer {
 
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
-    shooter.setDefaultCommand(new TriggerListener(
+    /*shooter.setDefaultCommand(new TriggerListener(
       new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
       new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
       new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
-      new RunHopper(hopper, hopperPower), 
+      new RunHopper(hopper, hopperPower),
+      shooter,
       mechController, 
-      triggerThreshold));
+      triggerThreshold));*/
 
     /**
      * Drive Controller Commands
