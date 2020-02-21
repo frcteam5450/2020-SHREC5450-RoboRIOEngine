@@ -37,8 +37,8 @@ public class ControlPanelSpindle extends SubsystemBase {
 
     motorCurrent = tab.add("Spindle Current", 0).getEntry();
 
-    setNeutralMode(mode);
-    setRampRate(rampRate);
+    //setNeutralMode(mode);
+    //setRampRate(rampRate);
   }
 
   public void setSpeed(

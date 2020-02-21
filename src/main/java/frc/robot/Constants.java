@@ -138,7 +138,7 @@ public final class Constants {
     climberStartPos = ClimberPosition.kUp;
 
     public static final double
-    climberSpeed = 0.35;
+    climberSpeed = 0.45;
 
     /**
      * SPINDLE CONSTANTS

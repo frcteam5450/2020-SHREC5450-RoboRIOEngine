@@ -33,22 +33,22 @@ public class TriggerListener extends CommandBase {
    * Creates a new TriggerListener.
    */
   public TriggerListener(
+    Shooter shooter,
     IntakeBall intakeBall,
     IndexBall indexBall,
     ShootRPM shootBalls,
     RunHopper runHopper,
-    Shooter shooter,
     XboxController controller,
     double triggerThreshold
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
     this.intakeBall = intakeBall;
     this.indexBall = indexBall;
     this.shootBalls = shootBalls;
     this.runHopper = runHopper;
     this.controller = controller;
     this.triggerThreshold = triggerThreshold;
-    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
