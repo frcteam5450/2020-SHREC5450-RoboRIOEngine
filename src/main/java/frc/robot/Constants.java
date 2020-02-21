@@ -138,14 +138,14 @@ public final class Constants {
     climberStartPos = ClimberPosition.kUp;
 
     public static final double
-    climberSpeed = 0.35;
+    climberSpeed = 0.45;
 
     /**
      * SPINDLE CONSTANTS
      */
 
     public static final int 
-    spindleMotorPort = 99;
+    spindleMotorPort = 1;
 
     public static NeutralMode
     spindleNeutralMode = NeutralMode.Brake;

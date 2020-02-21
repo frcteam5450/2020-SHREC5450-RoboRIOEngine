@@ -87,6 +87,7 @@ public class RobotContainer {
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
     shooter.setDefaultCommand(new TriggerListener(
+      shooter,
       new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
       new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
       new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 

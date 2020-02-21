@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Shooter;
 
 public class TriggerListener extends CommandBase {
 
@@ -32,6 +33,7 @@ public class TriggerListener extends CommandBase {
    * Creates a new TriggerListener.
    */
   public TriggerListener(
+    Shooter shooter,
     IntakeBall intakeBall,
     IndexBall indexBall,
     ShootRPM shootBalls,
@@ -40,6 +42,7 @@ public class TriggerListener extends CommandBase {
     double triggerThreshold
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
     this.intakeBall = intakeBall;
     this.indexBall = indexBall;
     this.shootBalls = shootBalls;
