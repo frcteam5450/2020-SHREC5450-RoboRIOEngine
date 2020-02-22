@@ -14,7 +14,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.*;
+import frc.robot.customTriggers.XboxControllerTrigger;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -84,18 +86,22 @@ public class RobotContainer {
     selectButton2 = new JoystickButton(mechController, selectButton),
     startButton2 = new JoystickButton(mechController, startButton);
 
+    XboxControllerTrigger 
+    triggerLeft2 = new XboxControllerTrigger(mechController, triggerThreshold, Hand.kLeft),
+    triggerRight2 = new XboxControllerTrigger(mechController, triggerThreshold, Hand.kRight);
+
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
-    shooter.setDefaultCommand(new TriggerListener(
+    /*shooter.setDefaultCommand(new TriggerListener(
       shooter,
       hopper,
       new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
       new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
-      new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP), 
+      new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP, triggerThreshold, mechController), 
       new RunHopper(hopper, hopperPower),
       new Delay(shooterDelay),
       mechController, 
-      triggerThreshold));
+      triggerThreshold));*/
 
     /**
      * Drive Controller Commands
@@ -115,11 +121,27 @@ public class RobotContainer {
     //aButton2.whenPressed(new LiftSlidesToPosition()); DNE
     //bButton2.whenPressed(new ClimbToPosition()); DNE
     xButton2.whileHeld(new RunHopper(hopper, hopperPower)); //Runs hopper manually
+    bButton2.whileHeld(new RunIntake(intake, -intakePower));
     yButton2.whenPressed(new ToggleClimb(climber)); //Toggles Climber assembly up/down
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
     rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
     selectButton2.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client));
+
+    triggerLeft2.whenActive(
+      new SequentialCommandGroup(
+        new IntakeBall(intake, intakePower, intakeBallIndexDelay),
+        new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold)
+      ));
+
+    triggerRight2.whileActiveContinuous(
+      new ParallelCommandGroup(
+        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP, triggerThreshold, mechController),
+        new SequentialCommandGroup(
+          new Delay(shooterDelay),
+          new RunHopper(hopper, hopperPower)
+        )
+      ));
   }
 
 

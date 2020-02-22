@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,7 +18,7 @@ import frc.robot.subsystems.Shooter;
 public class ShootRPM extends CommandBase {
 
   private Shooter shooter;
-
+  
   private ShuffleboardTab tab;
 
   private NetworkTableEntry 
@@ -29,7 +31,10 @@ public class ShootRPM extends CommandBase {
   upperRPM,
   lowerRPM,
   upperPower,
-  lowerPower;
+  lowerPower,
+  triggerThreshold;
+
+  private XboxController controller;
 
   /**
    * Creates a new ShootRPM.
@@ -41,7 +46,9 @@ public class ShootRPM extends CommandBase {
     double initUpperPower,
     double initLowerPower,
     double upperKP,
-    double lowerKP
+    double lowerKP,
+    double triggerThreshold,
+    XboxController controller
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -57,10 +64,14 @@ public class ShootRPM extends CommandBase {
     this.upperKP = upperKP;
     this.lowerKP = lowerKP;
 
+    this.triggerThreshold = triggerThreshold;
+
     tab = Shuffleboard.getTab("Shooter");
 
     this.lowerPowerEntry = tab.add("Lower Power Output", 0).getEntry();
     this.upperPowerEntry = tab.add("Upper Power Output", 0).getEntry();
+
+    this.controller = controller;
   }
 
   // Called when the command is initially scheduled.

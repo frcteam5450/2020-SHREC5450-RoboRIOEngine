@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -85,7 +84,7 @@ public class Climber extends SubsystemBase {
   }
 
   public double getEncoder(){
-    return motor1.getAlternateEncoder().getPosition();
+    return motor1.getEncoder().getPosition();
   }
 
   public void setIdleMode(IdleMode mode) {
@@ -96,7 +95,7 @@ public class Climber extends SubsystemBase {
   public void showStats(){
     motor1CurrentEntry.setDouble(motor1.getOutputCurrent());
     motor2CurrentEntry.setDouble(motor2.getOutputCurrent());
-    //magEncPosEntry.setDouble(getEncoder());
+    magEncPosEntry.setDouble(getEncoder());
   }
 
   public void climberUp() {

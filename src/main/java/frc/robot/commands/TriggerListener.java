@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
 
+@Deprecated
 public class TriggerListener extends CommandBase {
 
   private SequentialCommandGroup intakeAndIndex;
@@ -32,6 +33,7 @@ public class TriggerListener extends CommandBase {
   /**
    * Creates a new TriggerListener.
    */
+  
   public TriggerListener(
     Shooter shooter,
     Hopper hopper,
@@ -50,7 +52,7 @@ public class TriggerListener extends CommandBase {
 
     intakeAndIndex = new SequentialCommandGroup(intakeBall, indexBall);
     shootAndRunHopper = new ParallelCommandGroup(new SequentialCommandGroup(delay, runHopper), shootBalls);
-    kill = new KillAllCommands(shooter, hopper);
+    kill = new KillAllCommands(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -76,7 +78,7 @@ public class TriggerListener extends CommandBase {
     }
     else if (rtWasTriggered) {
       rtWasTriggered = false;
-      kill.schedule();
+      shootAndRunHopper.cancel();
     }
   
   }

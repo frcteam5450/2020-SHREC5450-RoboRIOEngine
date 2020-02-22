@@ -41,7 +41,7 @@ public final class Constants {
 
     //Drive motor Speeds and rampUp rates
     public static final double
-    driveInitialPower = 0.35,
+    driveInitialPower = 0.5,
     driveRampRate = 1;
 
     public static final boolean driveSwappedInitially = false;
@@ -63,17 +63,17 @@ public final class Constants {
     //doubles
     public static double
     shooterUpperFF = 0.25,
-    shooterLowerFF = 0.5,
+    shooterLowerFF = 0.25,
 
-    shooterLowerKP = 0.0000025,
-    shooterUpperKP = 0.0000025,
+    shooterLowerKP = 0.0000035,
+    shooterUpperKP = 0.0000035,
 
-    shooterLowerRPM = 5500, //a robot away from auto line
-    shooterUpperRPM = 2500,
+    shooterLowerRPM = 2500, //good outreach values
+    shooterUpperRPM = 1000,
 
     shooterRampRate = 0,
 
-    shooterDelay = 1.5;
+    shooterDelay = 0.75;
     
 
     /**
@@ -96,7 +96,7 @@ public final class Constants {
     //Hopper set positions
     public static final double
     conversionFactor = 507,
-    indexIncrement = 12 * conversionFactor,
+    indexIncrement = 13 * conversionFactor,
     k = 0.0005,
     endThreshold = 70;
 
@@ -117,7 +117,7 @@ public final class Constants {
     public static final double
     intakePower = -0.6,
     intakeRampRate = 0,
-    intakeBallIndexDelay = 0.25;
+    intakeBallIndexDelay = 0.35;
 
     /**
      * Compressor Constants
