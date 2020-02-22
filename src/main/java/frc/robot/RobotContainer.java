@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.*;
-import frc.robot.customTriggers.XboxControllerTrigger;
+import frc.robot.customtriggers.*;
+import frc.robot.customtriggers.XboxControllerDPad.DPadDirection;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -90,18 +91,11 @@ public class RobotContainer {
     triggerLeft2 = new XboxControllerTrigger(mechController, triggerThreshold, Hand.kLeft),
     triggerRight2 = new XboxControllerTrigger(mechController, triggerThreshold, Hand.kRight);
 
+    XboxControllerDPad
+    dpadUp1 = new XboxControllerDPad(driveController, DPadDirection.Up);
+
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
-    /*shooter.setDefaultCommand(new TriggerListener(
-      shooter,
-      hopper,
-      new IntakeBall(intake, intakePower, intakeBallIndexDelay), 
-      new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold), 
-      new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP, triggerThreshold, mechController), 
-      new RunHopper(hopper, hopperPower),
-      new Delay(shooterDelay),
-      mechController, 
-      triggerThreshold));*/
 
     /**
      * Drive Controller Commands
@@ -113,6 +107,7 @@ public class RobotContainer {
     //yButton1.whenPressed(new IncrememntSpindle()); DNE
     //rbButton1.whenPressed(new ToggleShooterSpeedControl()); DNE
     selectButton1.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client)); //interrupts all commands by requiring every subsystem
+    dpadUp1.whenActive(new ToggleDrivePower(driveFinePower, driveFastPower));
 
     /**
      * Mechanism Controller Commands
@@ -121,7 +116,7 @@ public class RobotContainer {
     //aButton2.whenPressed(new LiftSlidesToPosition()); DNE
     //bButton2.whenPressed(new ClimbToPosition()); DNE
     xButton2.whileHeld(new RunHopper(hopper, hopperPower)); //Runs hopper manually
-    bButton2.whileHeld(new RunIntake(intake, -intakePower));
+    bButton2.whileHeld(new RunIntake(intake, -intakePower)); //Runs intake backwards
     yButton2.whenPressed(new ToggleClimb(climber)); //Toggles Climber assembly up/down
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
     rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs

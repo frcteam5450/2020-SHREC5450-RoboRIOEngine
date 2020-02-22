@@ -41,7 +41,9 @@ public final class Constants {
 
     //Drive motor Speeds and rampUp rates
     public static final double
-    driveInitialPower = 0.5,
+    driveFinePower = 0.3,
+    driveFastPower = 0.6,
+    driveInitialPower = driveFinePower,
     driveRampRate = 1;
 
     public static final boolean driveSwappedInitially = false;
