@@ -106,7 +106,7 @@ public class RobotContainer {
     xButton1.whileHeld(new RunSpindle(spindleSpeed, spindle)); //Freely spins ControlPanelSpindle
     //yButton1.whenPressed(new IncrememntSpindle()); DNE
     //rbButton1.whenPressed(new ToggleShooterSpeedControl()); DNE
-    selectButton1.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, compressor, climber, spindle, client)); //interrupts all commands by requiring every subsystem
+    selectButton1.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client)); //interrupts all commands by requiring every subsystem
 
     /**
      * Mechanism Controller Commands
@@ -119,7 +119,7 @@ public class RobotContainer {
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
     rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
-    selectButton2.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, compressor, climber, spindle, client));
+    selectButton2.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client));
   }
 
 
