@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-  private TalonSRX _motor;
-  private DigitalInput _photoSensor;
+  private TalonSRX motor;
+  private DigitalInput photoSensor;
 
   /**
    * Creates a new Intake.
@@ -29,18 +29,18 @@ public class Intake extends SubsystemBase {
     double rampRate,
     int photoSensorPort
   ) {
-    _motor = new TalonSRX(motorPort);
+    motor = new TalonSRX(motorPort);
 
     setNeutralMode(neutralMode);
     setRampRate(rampRate);
 
-    _photoSensor = new DigitalInput(photoSensorPort);
+    photoSensor = new DigitalInput(photoSensorPort);
   }
 
   public void setSpeed(
     double speed
   ) {
-    _motor.set(ControlMode.PercentOutput, speed);
+    motor.set(ControlMode.PercentOutput, speed);
   }
 
   public void stopIntake() {
@@ -50,21 +50,25 @@ public class Intake extends SubsystemBase {
   public void setNeutralMode(
     NeutralMode mode
   ) {
-    _motor.setNeutralMode(mode);
+    motor.setNeutralMode(mode);
   }
 
   public void setRampRate(
     double rate
   ) {
-    _motor.configOpenloopRamp(rate);
+    motor.configOpenloopRamp(rate);
   }
 
   public void showStats() {
-    SmartDashboard.putNumber("Intake Motor Current", _motor.getStatorCurrent());
+    SmartDashboard.putNumber("Intake Motor Current", getCurrent());
+  }
+
+  public double getCurrent() {
+    return motor.getStatorCurrent();
   }
 
   public boolean getPhotoSensor() {
-    return _photoSensor.get();
+    return photoSensor.get();
   }
 
   @Override

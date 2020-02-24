@@ -18,4 +18,22 @@ public class Variables {
      */
     public static double driveCurrentPower = driveInitialPower;
     public static boolean driveSwapped = driveSwappedInitially;
+
+    /**
+     * Hopper Variables
+     */
+    public static double numBalls = 0;
+
+    /**
+     * Shooter Variables
+     */
+    public static double
+    currentShooterUpperFF = shooterUpperFF1,
+    currentShooterLowerFF = shooterLowerFF1,
+
+    currentShooterLowerKP = shooterLowerKP1,
+    currentShooterUpperKP = shooterUpperKP1,
+
+    currentShooterLowerRPM = shooterLowerRPM1,
+    currentShooterUpperRPM = shooterUpperRPM1;
 }

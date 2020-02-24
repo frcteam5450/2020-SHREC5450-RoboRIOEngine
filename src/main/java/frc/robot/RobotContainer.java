@@ -8,6 +8,12 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
+import static frc.robot.Variables.*;
+
+import frc.robot.commands.*;
+import frc.robot.customtriggers.*;
+import frc.robot.customtriggers.XboxControllerDPad.DPadDirection;
+import frc.robot.subsystems.*;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,10 +21,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import frc.robot.commands.*;
-import frc.robot.customtriggers.*;
-import frc.robot.customtriggers.XboxControllerDPad.DPadDirection;
-import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -33,14 +35,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem(0, null, 0, 0);
-  public static final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
-  public static final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
-  public static final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
-  public static final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
-  public static final Compressor compressor = new Compressor(compPort, pressSwitchPort);
-  public static final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
-  public static final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
-  public static final VisionClient client = new VisionClient(visLightPort);
+  private static final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
+  private static final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
+  private static final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
+  private static final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
+  private static final Compressor compressor = new Compressor(compPort, pressSwitchPort);
+  private static final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
+  private static final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
+  private static final VisionClient client = new VisionClient(visLightPort);
 
   //Controller declarations/definitions
   static XboxController
@@ -75,9 +77,20 @@ public class RobotContainer {
     lbButton1 = new JoystickButton(driveController, lbButton),
     rbButton1 = new JoystickButton(driveController, rbButton),
     selectButton1 = new JoystickButton(driveController, selectButton),
-    startButton1 = new JoystickButton(driveController, startButton),
+    startButton1 = new JoystickButton(driveController, startButton);
+
+    XboxControllerTrigger 
+    triggerLeft1 = new XboxControllerTrigger(driveController, triggerThreshold, Hand.kLeft),
+    triggerRight1 = new XboxControllerTrigger(driveController, triggerThreshold, Hand.kRight);
+
+    XboxControllerDPad
+    dPadUp1 = new XboxControllerDPad(driveController, DPadDirection.Up),
+    dPadRight1 = new XboxControllerDPad(driveController, DPadDirection.Right),
+    dPadDown1 = new XboxControllerDPad(driveController, DPadDirection.Down),
+    dPadLeft1 = new XboxControllerDPad(driveController, DPadDirection.Left);
 
     //Mechanism Controller Button Declarations/definitions
+    JoystickButton
     aButton2 = new JoystickButton(mechController, aButton),
     bButton2 = new JoystickButton(mechController, bButton),
     xButton2 = new JoystickButton(mechController, xButton),
@@ -92,10 +105,17 @@ public class RobotContainer {
     triggerRight2 = new XboxControllerTrigger(mechController, triggerThreshold, Hand.kRight);
 
     XboxControllerDPad
-    dpadUp1 = new XboxControllerDPad(driveController, DPadDirection.Up);
+    dPadUp2 = new XboxControllerDPad(mechController, DPadDirection.Up),
+    dPadRight2 = new XboxControllerDPad(mechController, DPadDirection.Right),
+    dPadDown2 = new XboxControllerDPad(mechController, DPadDirection.Down),
+    dPadLeft2 = new XboxControllerDPad(mechController, DPadDirection.Left);
+
+    //Custom triggers
+    VisionViable visionViable = new VisionViable(client);
 
     //Default Commands, run in background
     drive.setDefaultCommand(new TeleopDrive(drive, driveController, mechController));
+    new TriggerContinuously().whileActiveContinuous(new RunContinuously());
 
     /**
      * Drive Controller Commands
@@ -106,8 +126,8 @@ public class RobotContainer {
     xButton1.whileHeld(new RunSpindle(spindleSpeed, spindle)); //Freely spins ControlPanelSpindle
     //yButton1.whenPressed(new IncrememntSpindle()); DNE
     //rbButton1.whenPressed(new ToggleShooterSpeedControl()); DNE
-    selectButton1.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client)); //interrupts all commands by requiring every subsystem
-    dpadUp1.whenActive(new ToggleDrivePower(driveFinePower, driveFastPower));
+    selectButton1.whenPressed(new InterruptSubsystems(drive, hopper, shooter, intake, climber, spindle, client)); //interrupts all commands by requiring every subsystem
+    dPadUp1.whenActive(new ToggleDrivePower(driveFinePower, driveFastPower));
 
     /**
      * Mechanism Controller Commands
@@ -121,21 +141,22 @@ public class RobotContainer {
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
     rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
-    selectButton2.whenPressed(new KillAllCommands(drive, hopper, shooter, intake, climber, spindle, client));
+    selectButton2.whenPressed(new InterruptSubsystems(drive, hopper, shooter, intake, climber, spindle, client));
 
-    triggerLeft2.whenActive(
+    triggerLeft2.whileActiveContinuous(
       new SequentialCommandGroup(
-        new IntakeBall(intake, intakePower, intakeBallIndexDelay),
-        new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold)
+        new IntakeBall(intake, intakePower, intakeBallIndexDelay, snagCurrent, rumbleVal, mechController),
+        new IndexBall(hopper, hopperFF, indexIncrement, k, endThreshold, bindCurrent, rumbleVal, mechController)
       ));
 
     triggerRight2.whileActiveContinuous(
       new ParallelCommandGroup(
-        new ShootRPM(shooter, shooterUpperRPM, shooterLowerRPM, shooterUpperFF, shooterLowerFF, shooterUpperKP, shooterLowerKP, triggerThreshold, mechController),
+        new ShootRPM(shooter, currentShooterUpperRPM, currentShooterLowerRPM, currentShooterUpperFF, currentShooterLowerFF, currentShooterUpperKP, currentShooterLowerKP, shootBallCurrent),
         new SequentialCommandGroup(
           new Delay(shooterDelay),
           new RunHopper(hopper, hopperPower)
-        )
+        ),
+        new RunIntake(intake, intakePower)
       ));
   }
 

@@ -66,8 +66,12 @@ public class Hopper extends SubsystemBase {
     
   }
 
+  public double getCurrent() {
+    return motor.getStatorCurrent();
+  }
+
   public void showStats() {
-    SmartDashboard.putNumber("Hopper Current", motor.getStatorCurrent());
+    SmartDashboard.putNumber("Hopper Current", getCurrent());
     SmartDashboard.putNumber("Hopper Encoder", motor.getSelectedSensorPosition());
   }
 

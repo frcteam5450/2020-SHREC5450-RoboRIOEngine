@@ -8,12 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.Shooter;
+import static frc.robot.Variables.numBalls;
 
 public class ShootRPM extends CommandBase {
 
@@ -32,9 +32,9 @@ public class ShootRPM extends CommandBase {
   lowerRPM,
   upperPower,
   lowerPower,
-  triggerThreshold;
+  ballCurrent;
 
-  private XboxController controller;
+  private boolean wasBall = false;
 
   /**
    * Creates a new ShootRPM.
@@ -47,8 +47,7 @@ public class ShootRPM extends CommandBase {
     double initLowerPower,
     double upperKP,
     double lowerKP,
-    double triggerThreshold,
-    XboxController controller
+    double ballCurrent
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -64,14 +63,12 @@ public class ShootRPM extends CommandBase {
     this.upperKP = upperKP;
     this.lowerKP = lowerKP;
 
-    this.triggerThreshold = triggerThreshold;
+    this.ballCurrent = ballCurrent;
 
     tab = Shuffleboard.getTab("Shooter");
 
     this.lowerPowerEntry = tab.add("Lower Power Output", 0).getEntry();
     this.upperPowerEntry = tab.add("Upper Power Output", 0).getEntry();
-
-    this.controller = controller;
   }
 
   // Called when the command is initially scheduled.
@@ -99,6 +96,14 @@ public class ShootRPM extends CommandBase {
 
     lowerPowerEntry.setDouble(lowerPower);
     upperPowerEntry.setDouble(upperPower);
+
+    if (shooter.getLowerMotorCurrent() > ballCurrent || shooter.getUpperMotorCurrent() > ballCurrent) {
+      wasBall = true;
+    }
+    else if (wasBall) {
+      wasBall = false;
+      numBalls--;
+    }
   }
 
   // Called once the command ends or is interrupted.

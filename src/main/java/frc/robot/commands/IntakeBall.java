@@ -8,15 +8,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.Intake;
+import static frc.robot.Variables.*;
 
 public class IntakeBall extends CommandBase {
 
   private Intake intake;
   private double 
   speed,
-  delay;
+  delay,
+  snagCurrent,
+  rumbleVal;
+
+  private XboxController controller;
   
   private boolean wasNoBall = true;
   private Timer timer;
@@ -27,13 +35,19 @@ public class IntakeBall extends CommandBase {
   public IntakeBall(
     Intake intake, 
     double speed, 
-    double delay) {
+    double delay,
+    double snagCurrent,
+    double rumbleVal,
+    XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
 
     this.intake = intake;
     this.speed = speed;
     this.delay = delay;
+    this.snagCurrent = snagCurrent;
+    this.rumbleVal = rumbleVal;
+    this.controller = controller;
 
     timer = new Timer();
   }
@@ -52,6 +66,15 @@ public class IntakeBall extends CommandBase {
       timer.start();
       wasNoBall = false;
     }
+
+    if (intake.getCurrent() > snagCurrent) {
+      controller.setRumble(RumbleType.kLeftRumble, rumbleVal);
+      controller.setRumble(RumbleType.kRightRumble, rumbleVal);
+    }
+    else {
+      controller.setRumble(RumbleType.kLeftRumble, 0);
+      controller.setRumble(RumbleType.kRightRumble, 0);
+    }
     
   }
 
@@ -60,8 +83,14 @@ public class IntakeBall extends CommandBase {
   public void end(boolean interrupted) {
     intake.stopIntake();
     wasNoBall = true;
+
+    controller.setRumble(RumbleType.kLeftRumble, 0);
+    controller.setRumble(RumbleType.kRightRumble, 0);
+
     timer.stop();
     timer.reset();
+
+    numBalls++;
   }
 
   // Returns true when the command should end.

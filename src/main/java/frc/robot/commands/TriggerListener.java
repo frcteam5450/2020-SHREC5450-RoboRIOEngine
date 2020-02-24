@@ -20,7 +20,7 @@ public class TriggerListener extends CommandBase {
 
   private SequentialCommandGroup intakeAndIndex;
   private ParallelCommandGroup shootAndRunHopper;
-  private KillAllCommands kill;
+  //private KillAllCommands kill;
 
   private XboxController controller;
 
@@ -52,7 +52,7 @@ public class TriggerListener extends CommandBase {
 
     intakeAndIndex = new SequentialCommandGroup(intakeBall, indexBall);
     shootAndRunHopper = new ParallelCommandGroup(new SequentialCommandGroup(delay, runHopper), shootBalls);
-    kill = new KillAllCommands(shooter);
+    //kill = new KillAllCommands(shooter);
   }
 
   // Called when the command is initially scheduled.

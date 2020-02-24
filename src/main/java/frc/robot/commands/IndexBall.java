@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hopper;
 
@@ -19,7 +21,11 @@ public class IndexBall extends CommandBase {
   startPos,
   setPos,
   k,
-  endThreshold;
+  endThreshold,
+  bindCurrent,
+  rumbleVal;
+
+  private XboxController controller;
 
   /**
    * Creates a new IndexBall.
@@ -29,7 +35,10 @@ public class IndexBall extends CommandBase {
     double maxSpeed,
     double posIncrement,
     double k,
-    double endThreshold
+    double endThreshold,
+    double bindCurrent,
+    double rumbleVal,
+    XboxController controller
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hopper);
@@ -39,6 +48,10 @@ public class IndexBall extends CommandBase {
     this.posIncrement = posIncrement;
     this.k = k;
     this.endThreshold = endThreshold;
+    this.bindCurrent = bindCurrent;
+    this.rumbleVal = rumbleVal;
+
+    this.controller = controller;
   }
 
   // Called when the command is initially scheduled.
@@ -60,12 +73,24 @@ public class IndexBall extends CommandBase {
     }
 
     hopper.setSpeed(-power);
+
+    if (hopper.getCurrent() > bindCurrent) {
+      controller.setRumble(RumbleType.kLeftRumble, rumbleVal);
+      controller.setRumble(RumbleType.kRightRumble, rumbleVal);
+    }
+    else {
+      controller.setRumble(RumbleType.kLeftRumble, 0);
+      controller.setRumble(RumbleType.kRightRumble, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     hopper.stopHopper();
+
+    controller.setRumble(RumbleType.kLeftRumble, 0);
+    controller.setRumble(RumbleType.kRightRumble, 0);
   }
 
   // Returns true when the command should end.

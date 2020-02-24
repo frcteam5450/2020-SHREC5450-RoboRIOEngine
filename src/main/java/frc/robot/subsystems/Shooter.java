@@ -82,10 +82,18 @@ public class Shooter extends SubsystemBase {
   }
 
   public void showStats() {
-    upperMotorCurrent.setDouble(upperMotor.getOutputCurrent());
-    lowerMotorCurrent.setDouble(lowerMotor.getOutputCurrent());
+    upperMotorCurrent.setDouble(getUpperMotorCurrent());
+    lowerMotorCurrent.setDouble(getLowerMotorCurrent());
     upperMotorVelocity.setDouble(getVelocityUpperMotor());    
     lowerMotorVelocity.setDouble(getVelocityLowerMotor());
+  }
+
+  public double getUpperMotorCurrent() {
+    return upperMotor.getOutputCurrent();
+  }
+
+  public double getLowerMotorCurrent() {
+    return lowerMotor.getOutputCurrent();
   }
 
   public double getVelocityUpperMotor() {

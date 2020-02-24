@@ -64,18 +64,20 @@ public final class Constants {
 
     //doubles
     public static double
-    shooterUpperFF = 0.25,
-    shooterLowerFF = 0.25,
+    shooterUpperFF1 = 0.25,
+    shooterLowerFF1 = 0.25,
 
-    shooterLowerKP = 0.0000035,
-    shooterUpperKP = 0.0000035,
+    shooterLowerKP1 = 0.0000035,
+    shooterUpperKP1 = 0.0000035,
 
-    shooterLowerRPM = 2500, //good outreach values
-    shooterUpperRPM = 1000,
+    shooterLowerRPM1 = 2500, //good outreach values
+    shooterUpperRPM1 = 1000,
 
     shooterRampRate = 0,
 
-    shooterDelay = 0.75;
+    shooterDelay = 0.75,
+
+    shootBallCurrent = 20;
     
 
     /**
@@ -93,7 +95,8 @@ public final class Constants {
     public static final double
     hopperFF = 0.5,
     hopperPower = 0.75,
-    hopperRampRate = 0.25;
+    hopperRampRate = 0.25,
+    bindCurrent = 20;
 
     //Hopper set positions
     public static final double
@@ -119,7 +122,8 @@ public final class Constants {
     public static final double
     intakePower = -0.6,
     intakeRampRate = 0,
-    intakeBallIndexDelay = 0.35;
+    intakeBallIndexDelay = 0.35,
+    snagCurrent = 20;
 
     /**
      * Compressor Constants
@@ -185,6 +189,7 @@ public final class Constants {
     startButton = 8;
 
     public static final double
-    triggerThreshold = 0.1;
+    triggerThreshold = 0.1,
+    rumbleVal = 0.5;
     
 }

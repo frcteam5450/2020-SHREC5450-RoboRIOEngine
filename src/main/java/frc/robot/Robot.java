@@ -41,19 +41,25 @@
 
 /**
  * Version 0.1.1 | February 22, 2020
- * -
+ * -Reworked Trigger and DPad Controls
+ */
+
+/**
+ * Version 0.1.2 | February 24, 2020
+ * -Added Rumbles
+ * -Added Ball Counters
+ * -Renamed Kill Command to be more descriptive
+ * -Started VisionBased controls
  */
 
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import static frc.robot.Variables.*;
-import static frc.robot.Constants.*;
-import frc.robot.commands.*;
-import static frc.robot.RobotContainer.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

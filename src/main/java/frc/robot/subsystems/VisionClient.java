@@ -21,7 +21,8 @@ public class VisionClient extends SubsystemBase {
 
   private NetworkTableEntry
   distanceEntry,
-  angleEntry;
+  angleEntry,
+  viableEntry;
   
   /**
    * Creates a new VisionClient.
@@ -31,11 +32,12 @@ public class VisionClient extends SubsystemBase {
   ) {
     visionLight = new Solenoid(visLightPort);
 
-    //on();
+    on();
 
     tab = Shuffleboard.getTab("Vision");
     distanceEntry = tab.add("Distance To Target", 0).getEntry();
     angleEntry = tab.add("Angle to Target", 0).getEntry();
+    viableEntry = tab.add("Vision Viable?", false).getEntry();
   }
 
   public void on(){
@@ -51,7 +53,11 @@ public class VisionClient extends SubsystemBase {
   }
 
   public double getAngleToTarget() {
-    return angleEntry.getDouble(-1);
+    return angleEntry.getDouble(-100);
+  }
+
+  public boolean isViable() {
+    return viableEntry.getBoolean(false);
   }
 
   @Override

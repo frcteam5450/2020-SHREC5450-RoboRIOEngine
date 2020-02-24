@@ -8,20 +8,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.VisionClient;
 
-public class KillAllCommands extends CommandBase {
+public class VisionBasedShooterRPM extends CommandBase {
+
+  private Shooter shooter;
+  private VisionClient client;
+
   /**
-   * Creates a new KillAllCommands.
+   * Creates a new VisionBasedShooterRPM.
    */
-  public KillAllCommands(
-    Subsystem ... a
+  public VisionBasedShooterRPM(
+    Shooter shooter,
+    VisionClient client
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    for (int i = 0; i < a.length; i++) {
-      addRequirements(a[i]);
-    }
+    addRequirements(client);
+    addRequirements(shooter);
+
+    this.shooter = shooter;
+    this.client = client;
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +49,6 @@ public class KillAllCommands extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
