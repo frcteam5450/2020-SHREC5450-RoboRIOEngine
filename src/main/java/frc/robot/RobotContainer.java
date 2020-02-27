@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.Constants.*;
 import static frc.robot.Variables.*;
 
+import frc.robot.autonomous.TestAuto;
 import frc.robot.commands.*;
 import frc.robot.customtriggers.*;
 import frc.robot.customtriggers.XboxControllerDPad.DPadDirection;
@@ -40,7 +41,7 @@ public class RobotContainer {
   private static final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
   private static final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
   private static final Compressor compressor = new Compressor(compPort, pressSwitchPort);
-  private static final Climber climber = new Climber(climberForwardPort, climberReversePort, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
+  private static final Climber climber = new Climber(climberForwardPort, climberReversePort, forwardBrake, reverseBrake, climberStartPos, 7, 8, MotorType.kBrushless, IdleMode.kBrake, 0);
   private static final ControlPanelSpindle spindle = new ControlPanelSpindle(spindleMotorPort, spindleNeutralMode, spindleRampRate);
   private static final VisionClient client = new VisionClient(visLightPort);
 
@@ -168,6 +169,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new TestAuto(drive);
   }
 }

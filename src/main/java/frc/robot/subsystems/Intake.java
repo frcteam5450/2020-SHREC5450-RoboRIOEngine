@@ -11,14 +11,21 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
   private TalonSRX motor;
   private DigitalInput photoSensor;
+
+  private ShuffleboardTab tab;
+
+  private NetworkTableEntry
+  currentEntry;
 
   /**
    * Creates a new Intake.
@@ -35,6 +42,10 @@ public class Intake extends SubsystemBase {
     setRampRate(rampRate);
 
     photoSensor = new DigitalInput(photoSensorPort);
+
+    tab = Shuffleboard.getTab("Intake");
+
+    currentEntry = tab.add("Motor Current", 0).getEntry();
   }
 
   public void setSpeed(
@@ -60,7 +71,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void showStats() {
-    SmartDashboard.putNumber("Intake Motor Current", getCurrent());
+    currentEntry.setDouble(getCurrent());
   }
 
   public double getCurrent() {

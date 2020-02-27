@@ -11,6 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,6 +21,12 @@ public class Hopper extends SubsystemBase {
 
   //Motor Declaration
   private TalonSRX motor;
+
+  private ShuffleboardTab tab;
+
+  private NetworkTableEntry 
+  currentEntry,
+  positionEntry;
 
   /**
    * Creates a new Hopper.
@@ -35,6 +44,11 @@ public class Hopper extends SubsystemBase {
 
     //sets time in seconds from 0 to 1 in motor power
     setRampRate(rampRate);
+
+    tab = Shuffleboard.getTab("Hopper");
+
+    currentEntry = tab.add("Motor Current", 0).getEntry();
+    positionEntry = tab.add("Position", 0).getEntry();
   }
 
   public void setSpeed(
@@ -71,8 +85,8 @@ public class Hopper extends SubsystemBase {
   }
 
   public void showStats() {
-    SmartDashboard.putNumber("Hopper Current", getCurrent());
-    SmartDashboard.putNumber("Hopper Encoder", motor.getSelectedSensorPosition());
+    currentEntry.setDouble(getCurrent());
+    positionEntry.setDouble(getEncPos());
   }
 
   @Override

@@ -7,51 +7,84 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Drivetrain;
 
-public class RunClimber extends CommandBase {
+public class TimedDrive extends CommandBase {
 
-  private Climber climber;
+  private Drivetrain drive;
 
-  private double speed;
+  private Timer timer;
+
+  private double
+  time,
+  fF,
+  kP,
+  power;
 
   /**
-   * Creates a new RunClimber.
+   * Creates a new TimedDrive.
    */
-  public RunClimber(
-    Climber climber,
-    double speed
+  public TimedDrive(
+    Drivetrain drive,
+    double time,
+    double fF,
+    double kP
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climber);
+    addRequirements(drive);
 
-    this.climber = climber;
-    this.speed = speed;
+    this.drive = drive;
+
+    this.time = time;
+    this.fF = fF;
+    this.kP = kP;
+
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.release();
+    drive.resetGyro();
+    timer.start();
+  }
+
+  public double getOutput(
+    double setVal,
+    double kP,
+    double outputVal
+  ) {
+    double error = setVal - outputVal;
+    return error * kP;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.setSpeed(speed);
+    double 
+    leftPower,
+    rightPower;
+
+    leftPower = fF + getOutput(0, kP, drive.getAngle());
+    rightPower = fF;
+
+    drive.setSpeed(leftPower, rightPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.setSpeed(0);
-    climber.brake();
+    drive.stop();
+    timer.stop();
+    timer.reset();
+    drive.resetGyro();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return time < timer.get();
   }
 }

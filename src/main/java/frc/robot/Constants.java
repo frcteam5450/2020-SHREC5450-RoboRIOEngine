@@ -71,7 +71,52 @@ public final class Constants {
     shooterUpperKP1 = 0.0000035,
 
     shooterLowerRPM1 = 2500, //good outreach values
-    shooterUpperRPM1 = 1000,
+    shooterUpperRPM1 = 4000,
+
+    shooterUpperFF2 = 0.25,
+    shooterLowerFF2 = 0.25,
+
+    shooterLowerKP2 = 0.0000035,
+    shooterUpperKP2 = 0.0000035,
+
+    shooterLowerRPM2 = 2500, //good outreach values
+    shooterUpperRPM2 = 1000,
+
+    shooterUpperFF3 = 0.25,
+    shooterLowerFF3 = 0.25,
+
+    shooterLowerKP3 = 0.0000035,
+    shooterUpperKP3 = 0.0000035,
+
+    shooterLowerRPM3 = 2500, //good outreach values
+    shooterUpperRPM3 = 1000,
+
+    shooterUpperFF4 = 0.25,
+    shooterLowerFF4 = 0.25,
+
+    shooterLowerKP4 = 0.0000035,
+    shooterUpperKP4 = 0.0000035,
+
+    shooterLowerRPM4 = 2500, //good outreach values
+    shooterUpperRPM4 = 1000,
+
+    shooterUpperFF5 = 0.25,
+    shooterLowerFF5 = 0.25,
+
+    shooterLowerKP5 = 0.0000035,
+    shooterUpperKP5 = 0.0000035,
+
+    shooterLowerRPM5 = 2500, //good outreach values
+    shooterUpperRPM5 = 1000,
+
+    shooterUpperFF6 = 0.25,
+    shooterLowerFF6 = 0.25,
+
+    shooterLowerKP6 = 0.0000035,
+    shooterUpperKP6 = 0.0000035,
+
+    shooterLowerRPM6 = 2500, //good outreach values
+    shooterUpperRPM6 = 1000,
 
     shooterRampRate = 0,
 
@@ -147,6 +192,10 @@ public final class Constants {
 
     public static final double
     climberSpeed = 0.45;
+
+    public static final int
+    reverseBrake = 7,
+    forwardBrake = 6;
 
     /**
      * SPINDLE CONSTANTS

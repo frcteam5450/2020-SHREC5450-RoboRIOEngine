@@ -25,7 +25,9 @@ public class Climber extends SubsystemBase {
     kDown
   }
 
-  private DoubleSolenoid pistons;
+  private DoubleSolenoid 
+  pistons,
+  brake;
   private CANSparkMax motor1;
   private CANSparkMax motor2;
   private double rampRate;
@@ -43,8 +45,10 @@ public class Climber extends SubsystemBase {
    * Creates a new Climber.
    */
   public Climber(
-    int forwardSolenoid,
-    int reverseSolenoid,
+    int forwardSolenoidPistons,
+    int reverseSolenoidPistons,
+    int forwardSolenoidBrake,
+    int reverseSolenoidBrake,
     ClimberPosition startPos,
     int motor1Port,
     int motor2Port,
@@ -52,13 +56,18 @@ public class Climber extends SubsystemBase {
     IdleMode mode,
     double rampRate
   ) {
-    pistons = new DoubleSolenoid(forwardSolenoid, reverseSolenoid);
+    pistons = new DoubleSolenoid(forwardSolenoidPistons, reverseSolenoidPistons);
+    brake = new DoubleSolenoid(forwardSolenoidBrake, reverseSolenoidBrake);
+
     if (startPos == ClimberPosition.kUp) {
       climberUp();
     }
     else {
       climberDown();
     }
+
+    brake();
+
     motor1 = new CANSparkMax(motor1Port, type);
     motor2 = new CANSparkMax(motor2Port, type);
     this.mode = mode;
@@ -113,6 +122,14 @@ public class Climber extends SubsystemBase {
     else {
       return ClimberPosition.kDown;
     }
+  }
+
+  public void brake() {
+    brake.set(Value.kForward);
+  }
+
+  public void release() {
+    brake.set(Value.kReverse);
   }
 
   @Override
