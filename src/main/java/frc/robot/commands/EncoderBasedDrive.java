@@ -7,28 +7,25 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class TimedDrive extends CommandBase {
+public class EncoderBasedDrive extends CommandBase {
 
   private Drivetrain drive;
 
-  private Timer timer;
-
-  private double
-  time,
-  fF,
-  kP,
-  power;
+  private double distance, 
+  fF, 
+  kP, 
+  initPos1,
+  initPos2;
 
   /**
-   * Creates a new TimedDrive.
+   * Creates a new distancedDrive.
    */
-  public TimedDrive(
+  public EncoderBasedDrive(
     Drivetrain drive,
-    double time,
+    double distance,
     double fF,
     double kP
   ) {
@@ -37,18 +34,16 @@ public class TimedDrive extends CommandBase {
 
     this.drive = drive;
 
-    this.time = time;
+    this.distance = distance;
     this.fF = fF;
     this.kP = kP;
-
-    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.resetGyro();
-    timer.start();
+    initPos1 = drive.getLeftEncPos();
+    initPos2 = drive.getRightEncPos();
   }
 
   public double getOutput(
@@ -60,7 +55,7 @@ public class TimedDrive extends CommandBase {
     return error * kP;
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // Called every distance the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double 
@@ -77,14 +72,15 @@ public class TimedDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drive.stop();
-    timer.stop();
-    timer.reset();
     drive.resetGyro();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return time < timer.get();
+    double
+    leftChange = Math.abs(initPos1 - drive.getLeftEncPos()),
+    rightChange = Math.abs(initPos2 - drive.getRightEncPos());
+    return leftChange > distance || rightChange > distance;
   }
 }

@@ -48,6 +48,10 @@ public class VisionClient extends SubsystemBase {
     visionLight.set(false);
   }
 
+  public boolean getLightState() {
+    return visionLight.get();
+  }
+
   public double getDistanceToTarget() {
     return distanceEntry.getDouble(-1);
   }

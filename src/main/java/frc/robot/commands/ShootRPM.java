@@ -67,8 +67,8 @@ public class ShootRPM extends CommandBase {
 
     tab = Shuffleboard.getTab("Shooter");
 
-    this.lowerPowerEntry = tab.add("Lower Power Output", 0).getEntry();
-    this.upperPowerEntry = tab.add("Upper Power Output", 0).getEntry();
+    //this.lowerPowerEntry = tab.add("Lower Power Output", 0).getEntry();
+    //this.upperPowerEntry = tab.add("Upper Power Output", 0).getEntry();
   }
 
   // Called when the command is initially scheduled.
@@ -94,8 +94,8 @@ public class ShootRPM extends CommandBase {
 
     shooter.setSpeed(upperPower, lowerPower);
 
-    lowerPowerEntry.setDouble(lowerPower);
-    upperPowerEntry.setDouble(upperPower);
+    //lowerPowerEntry.setDouble(lowerPower);
+    //upperPowerEntry.setDouble(upperPower);
 
     if (shooter.getLowerMotorCurrent() > ballCurrent || shooter.getUpperMotorCurrent() > ballCurrent) {
       wasBall = true;

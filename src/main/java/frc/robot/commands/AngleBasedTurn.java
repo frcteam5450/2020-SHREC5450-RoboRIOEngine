@@ -7,84 +7,75 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class TimedDrive extends CommandBase {
+public class AngleBasedTurn extends CommandBase {
 
   private Drivetrain drive;
 
-  private Timer timer;
-
   private double
-  time,
-  fF,
   kP,
-  power;
+  angle,
+  power,
+  endThreshold;
 
   /**
-   * Creates a new TimedDrive.
+   * Creates a new AngleBasedTurn.
    */
-  public TimedDrive(
+  public AngleBasedTurn(
     Drivetrain drive,
-    double time,
-    double fF,
-    double kP
+    double kP,
+    double angle,
+    double endThreshold
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
 
     this.drive = drive;
 
-    this.time = time;
-    this.fF = fF;
     this.kP = kP;
-
-    timer = new Timer();
+    this.angle = angle;
+    this.endThreshold = endThreshold;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     drive.resetGyro();
-    timer.start();
   }
 
   public double getOutput(
-    double setVal,
+    double setAngle,
     double kP,
-    double outputVal
+    double outputAngle
   ) {
-    double error = setVal + outputVal;
+    double error = setAngle - outputAngle;
     return error * kP;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double 
-    leftPower,
-    rightPower;
+    power = getOutput(angle, kP, drive.getAngle());
 
-    leftPower = fF + getOutput(0, kP, drive.getAngle());
-    rightPower = fF;
-
-    drive.setSpeed(leftPower, rightPower);
+    drive.setSpeed(-power, power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drive.stop();
-    timer.stop();
-    timer.reset();
     drive.resetGyro();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return time < timer.get();
+    double 
+    lowerBound = angle - (endThreshold * angle),
+    upperBound = angle + (endThreshold * angle);
+
+    return lowerBound < drive.getAngle() && upperBound > drive.getAngle();
   }
 }

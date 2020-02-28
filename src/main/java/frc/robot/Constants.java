@@ -44,7 +44,11 @@ public final class Constants {
     driveFinePower = 0.3,
     driveFastPower = 0.6,
     driveInitialPower = driveFinePower,
-    driveRampRate = 1;
+    driveRampRate = 1,
+    driveSetAngle = 0,
+    driveEncConversionFactor = 1.76,
+    driveAngleFF = 0.45,
+    driveAngleKP = 0.001;
 
     public static final boolean driveSwappedInitially = false;
 
@@ -64,16 +68,16 @@ public final class Constants {
 
     //doubles
     public static double
-    shooterUpperFF1 = 0.25,
-    shooterLowerFF1 = 0.25,
+    shooterUpperFF1 = 0.15,
+    shooterLowerFF1 = 0.15,
 
-    shooterLowerKP1 = 0.0000035,
-    shooterUpperKP1 = 0.0000035,
+    shooterLowerKP1 = 0.000005,
+    shooterUpperKP1 = 0.000005,
 
-    shooterLowerRPM1 = 2500, //good outreach values
-    shooterUpperRPM1 = 4000,
+    shooterLowerRPM1 = 2500, 
+    shooterUpperRPM1 = 3000,
 
-    shooterUpperFF2 = 0.25,
+    /*shooterUpperFF2 = 0.25,
     shooterLowerFF2 = 0.25,
 
     shooterLowerKP2 = 0.0000035,
@@ -116,7 +120,7 @@ public final class Constants {
     shooterUpperKP6 = 0.0000035,
 
     shooterLowerRPM6 = 2500, //good outreach values
-    shooterUpperRPM6 = 1000,
+    shooterUpperRPM6 = 1000,*/
 
     shooterRampRate = 0,
 
@@ -191,7 +195,7 @@ public final class Constants {
     climberStartPos = ClimberPosition.kUp;
 
     public static final double
-    climberSpeed = 0.45;
+    climberSpeed = 0.35;
 
     public static final int
     reverseBrake = 7,
