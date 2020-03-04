@@ -26,18 +26,18 @@ public class Drivetrain extends SubsystemBase {
 
   //Motor declarations
   private CANSparkMax
-  _leftMotor1,
-  _leftMotor2,
-  _rightMotor1,
-  _rightMotor2;
+  leftMotor1,
+  leftMotor2,
+  rightMotor1,
+  rightMotor2;
 
   //Encodor declaration
   private CANEncoder 
-  _leftEnc,
-  _rightEnc;
+  leftEnc,
+  rightEnc;
 
   //Gyroscope declaration
-  private ADXRS450_Gyro _gyro;
+  private ADXRS450_Gyro gyro;
 
   private ShuffleboardTab tab;
 
@@ -45,7 +45,9 @@ public class Drivetrain extends SubsystemBase {
   leftMotor1CurrentEntry,
   leftMotor2CurrentEntry,
   rightMotor1CurrentEntry,
-  rightMotor2CurrentEntry;
+  rightMotor2CurrentEntry,
+  leftEncEntry,
+  rightEncEntry;
 
   /**
    * Creates a new Drivetrain.
@@ -57,30 +59,35 @@ public class Drivetrain extends SubsystemBase {
     int right2, //right Motor 2's port
     MotorType type, //type of motor, brushed or brushless
     IdleMode idleMode, //Mode when the motor is idle, brake or coast
-    double rampRate
+    double rampRate,
+    double conversionFactor
   ) {
     //Motor definitions
-    _leftMotor1 = new CANSparkMax(left1, type);
-    _leftMotor2 = new CANSparkMax(left2, type);
-    _rightMotor1 = new CANSparkMax(right1, type);
-    _rightMotor2 = new CANSparkMax(right2, type);
+    leftMotor1 = new CANSparkMax(left1, type);
+    leftMotor2 = new CANSparkMax(left2, type);
+    rightMotor1 = new CANSparkMax(right1, type);
+    rightMotor2 = new CANSparkMax(right2, type);
 
     //Encoder definitions
-    _leftEnc = _leftMotor1.getAlternateEncoder();
-    _rightEnc = _rightMotor1.getAlternateEncoder();
+    leftEnc = leftMotor1.getEncoder();
+    rightEnc = rightMotor1.getEncoder();
 
     //Gyroscope definition
-    _gyro = new ADXRS450_Gyro();
+    gyro = new ADXRS450_Gyro();
 
     setIdleMode(idleMode);
     setRampRate(rampRate);
+    setEncoderConversionFactor(conversionFactor);
 
     this.tab = Shuffleboard.getTab("Drivetrain");
 
-    leftMotor1CurrentEntry = tab.add("Left Motor 1 Current", _leftMotor1.getOutputCurrent()).getEntry();
-    leftMotor2CurrentEntry = tab.add("Left Motor 2 Current", _leftMotor2.getOutputCurrent()).getEntry();
-    rightMotor1CurrentEntry = tab.add("Right Motor 1 Current", _rightMotor1.getOutputCurrent()).getEntry();
-    rightMotor2CurrentEntry = tab.add("Right Motor 2 Current", _rightMotor2.getOutputCurrent()).getEntry();
+    leftMotor1CurrentEntry = tab.add("Left Motor 1 Current", leftMotor1.getOutputCurrent()).getEntry();
+    leftMotor2CurrentEntry = tab.add("Left Motor 2 Current", leftMotor2.getOutputCurrent()).getEntry();
+    rightMotor1CurrentEntry = tab.add("Right Motor 1 Current", rightMotor1.getOutputCurrent()).getEntry();
+    rightMotor2CurrentEntry = tab.add("Right Motor 2 Current", rightMotor2.getOutputCurrent()).getEntry();
+
+    leftEncEntry = tab.add("Left Enc Position", 0).getEntry();
+    rightEncEntry = tab.add("Right Enc Position", 0).getEntry();
   }
 
   /**
@@ -94,10 +101,10 @@ public class Drivetrain extends SubsystemBase {
     double rightPower 
   ) {
     //Sets the motors to a speed, one of the powers will need to be negative at some point
-    _leftMotor1.set(-leftPower);
-    _leftMotor2.set(-leftPower);
-    _rightMotor1.set(rightPower);
-    _rightMotor2.set(rightPower);
+    leftMotor1.set(-leftPower);
+    leftMotor2.set(-leftPower);
+    rightMotor1.set(rightPower);
+    rightMotor2.set(rightPower);
   }
 
   /**
@@ -107,10 +114,10 @@ public class Drivetrain extends SubsystemBase {
   public void setIdleMode(
     IdleMode mode
   ) {
-    _leftMotor1.setIdleMode(mode);
-    _leftMotor2.setIdleMode(mode);
-    _rightMotor1.setIdleMode(mode);
-    _rightMotor2.setIdleMode(mode);
+    leftMotor1.setIdleMode(mode);
+    leftMotor2.setIdleMode(mode);
+    rightMotor1.setIdleMode(mode);
+    rightMotor2.setIdleMode(mode);
   }
 
   /**
@@ -120,10 +127,10 @@ public class Drivetrain extends SubsystemBase {
   public void setRampRate(
     double rate
   ) {
-    _leftMotor1.setOpenLoopRampRate(rate);
-    _leftMotor2.setOpenLoopRampRate(rate);
-    _rightMotor1.setOpenLoopRampRate(rate);
-    _rightMotor2.setOpenLoopRampRate(rate);
+    leftMotor1.setOpenLoopRampRate(rate);
+    leftMotor2.setOpenLoopRampRate(rate);
+    rightMotor1.setOpenLoopRampRate(rate);
+    rightMotor2.setOpenLoopRampRate(rate);
   }
 
   /**
@@ -137,39 +144,42 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Displays amount of current (in amps) drawn by each motor
    */
-  public void displayMotorCurrent() {
-    leftMotor1CurrentEntry.setDouble(_leftMotor1.getOutputCurrent());
-    leftMotor2CurrentEntry.setDouble(_leftMotor2.getOutputCurrent());
-    rightMotor2CurrentEntry.setDouble(_rightMotor1.getOutputCurrent());
-    rightMotor2CurrentEntry.setDouble(_rightMotor2.getOutputCurrent());
+  public void showStats() {
+    leftMotor1CurrentEntry.setDouble(leftMotor1.getOutputCurrent());
+    leftMotor2CurrentEntry.setDouble(leftMotor2.getOutputCurrent());
+    rightMotor1CurrentEntry.setDouble(rightMotor1.getOutputCurrent());
+    rightMotor2CurrentEntry.setDouble(rightMotor2.getOutputCurrent());
+
+    leftEncEntry.setDouble(getLeftEncPos());
+    rightEncEntry.setDouble(getRightEncPos());
   }
 
   /**
    * Gets position(in counts by default) from left side encoder
    */
   public double getLeftEncPos() {
-    return _leftEnc.getPosition();
+    return leftEnc.getPosition();
   }
 
    /**
    * Gets position(in counts by default) from right side encoder
    */
   public double getRightEncPos() {
-    return _rightEnc.getPosition();
+    return rightEnc.getPosition();
   }
 
   /**
    * Gets Velocity (in RPM by default) from left side encoder
    */
   public double getLeftEncVelocity() {
-    return _leftEnc.getVelocity();
+    return leftEnc.getVelocity();
   }
 
   /**
    * Gets Velocity (in RPM by default) from right side encoder
    */
   public double getRightEncVelocity() {
-    return _rightEnc.getVelocity();
+    return rightEnc.getVelocity();
   }
 
   /**
@@ -179,28 +189,29 @@ public class Drivetrain extends SubsystemBase {
   public void setEncoderConversionFactor(
     double fac
   ) {
-    _leftEnc.setPositionConversionFactor(fac);
-    _rightEnc.setPositionConversionFactor(fac);
+    leftEnc.setPositionConversionFactor(fac);
+    rightEnc.setPositionConversionFactor(fac);
   }
 
   public void calibrateGyro() {
-    _gyro.calibrate();
+    gyro.calibrate();
   }
 
   public void resetGyro() {
-    _gyro.reset();
+    gyro.reset();
   }
 
   public double getAngle() {
-    return _gyro.getAngle();
+    return gyro.getAngle();
   }
 
   public double getAngleRate() {
-    return _gyro.getRate();
+    return gyro.getRate();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    showStats();
   }
 }

@@ -8,6 +8,8 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AngleBasedTurn;
+import frc.robot.commands.EncoderBasedDrive;
 import frc.robot.commands.TimedDrive;
 import frc.robot.subsystems.Drivetrain;
 
@@ -22,7 +24,7 @@ public class TestAuto extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new TimedDrive(drive, 0.5, .5, 0.0001)
+      new EncoderBasedDrive(drive, 20, .25, .005) 
     );
   }
 }
