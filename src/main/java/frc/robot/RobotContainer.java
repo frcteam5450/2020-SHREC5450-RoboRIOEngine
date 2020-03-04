@@ -158,7 +158,7 @@ public class RobotContainer {
     bButton2.whileHeld(new RunIntake(intake, -intakePower)); //Runs intake backwards
     yButton2.whenPressed(new ToggleClimb(climber)); //Toggles Climber assembly up/down
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
-    rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
+    rbButton2.whileHeld(new RunClimber(climber, -.25)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
     selectButton2.whenPressed(new InterruptSubsystems(drive, hopper, shooter, intake, climber, spindle, client));
 

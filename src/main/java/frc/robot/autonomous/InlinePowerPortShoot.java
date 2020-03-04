@@ -42,18 +42,27 @@ public class InlinePowerPortShoot extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
       new ToggleClimb(climber),
+<<<<<<< HEAD
       new Delay(2),
       new EncoderBasedDrive(drive, 30, -.25, .005),
+=======
+      new Delay(3),
+      new EncoderBasedDrive(drive, 40, .25, .005),
+>>>>>>> 9aace8e5e0fd1117612a6399662d4bdcceba0dd6
       new ParallelCommandGroup(
         new ShootRPM(shooter, currentShooterUpperRPM, currentShooterLowerRPM, currentShooterUpperFF, currentShooterLowerFF, currentShooterUpperKP, currentShooterLowerKP, shootBallCurrent),
         new SequentialCommandGroup(
           new Delay(2),
           new ParallelCommandGroup(
             new RunIntake(intake, intakePower),
+<<<<<<< HEAD
             new RunHopper(hopper, hopperPower),
             new SequentialCommandGroup(
               new Delay(5)
             )
+=======
+            new RunHopper(hopper, .5)
+>>>>>>> 9aace8e5e0fd1117612a6399662d4bdcceba0dd6
           )
         )
       )

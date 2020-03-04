@@ -62,7 +62,11 @@ public class EncoderBasedDrive extends CommandBase {
     leftPower,
     rightPower;
 
+<<<<<<< HEAD
     leftPower = fF + getOutput(0, kP, drive.getAngle());
+=======
+    leftPower = fF; //+ getOutput(0, kP, drive.getAngle());
+>>>>>>> 9aace8e5e0fd1117612a6399662d4bdcceba0dd6
     rightPower = fF;
 
     drive.setSpeed(leftPower, rightPower);

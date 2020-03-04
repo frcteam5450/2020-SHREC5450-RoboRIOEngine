@@ -10,7 +10,6 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import frc.robot.subsystems.Climber.ClimberPosition;
 
 /**
@@ -74,8 +73,13 @@ public final class Constants {
     shooterLowerKP1 = 0.000005,
     shooterUpperKP1 = 0.000005,
 
+<<<<<<< HEAD
     shooterLowerRPM1 = 2500, 
     shooterUpperRPM1 = 3000,
+=======
+    shooterLowerRPM1 = 2750, 
+    shooterUpperRPM1 = 3200,
+>>>>>>> 9aace8e5e0fd1117612a6399662d4bdcceba0dd6
 
     /*shooterUpperFF2 = 0.25,
     shooterLowerFF2 = 0.25,

@@ -84,6 +84,10 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
     UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
+<<<<<<< HEAD
+=======
+    cam.setResolution(640, 360);
+>>>>>>> 9aace8e5e0fd1117612a6399662d4bdcceba0dd6
   }
 
   /**
