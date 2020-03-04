@@ -10,7 +10,7 @@ package frc.robot;
 import static frc.robot.Constants.*;
 import static frc.robot.Variables.*;
 
-import frc.robot.autonomous.TestAuto;
+import frc.robot.autonomous.*;
 import frc.robot.commands.*;
 import frc.robot.customtriggers.*;
 import frc.robot.customtriggers.XboxControllerDPad.DPadDirection;
@@ -22,6 +22,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -36,7 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem(0, null, 0, 0);
-  private static final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate);
+  private static final Drivetrain drive = new Drivetrain(driveLeft1, driveLeft2, driveRight1, driveRight2, driveMotorType, driveIdleMode, driveRampRate, driveEncConversionFactor);
   private static final Hopper hopper = new Hopper(hopperPort, hopperIdleMode, hopperRampRate);
   private static final Shooter shooter = new Shooter(shooterLower, shooterUpper, shooterMotorType, shooterIdleMode, shooterRampRate);
   private static final Intake intake = new Intake(intakePort, intakeIdleMode, intakeRampRate, photoSensorPort);
@@ -49,6 +51,15 @@ public class RobotContainer {
   static XboxController
   driveController = new XboxController(controllerPort1),
   mechController = new XboxController(controllerPort2);
+
+  //Command Selector
+  private static final Command 
+  defaultAuto = null,
+  autoInlineShoot = new InlinePowerPortShoot(drive, shooter, climber, hopper, intake),
+  autoCenterShoot = new autoCenterShoot(drive, intake, climber, hopper, shooter),
+  autoMoveOffLine = new EncoderBasedDrive(drive, 30, -.25, .005);
+
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -56,6 +67,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    chooser.setDefaultOption("Default Auto - Does Nothing", defaultAuto);
+    chooser.addOption("Inline With Power Port, Shoot", autoInlineShoot);
+    chooser.addOption("Centered in Field, Shoot", autoCenterShoot);
+    chooser.addOption("Move off Line", autoMoveOffLine);
+    SmartDashboard.putData("Auto choices", chooser);
   }
 
   /**
@@ -122,13 +139,14 @@ public class RobotContainer {
      * Drive Controller Commands
      */
 
-    //aButton1.whenPressed(new AutoAlign()) DNE
+    aButton1.and(visionViable).whenActive(new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, endThreshold));
     bButton1.whenPressed(new SwapDrive());
     xButton1.whileHeld(new RunSpindle(spindleSpeed, spindle)); //Freely spins ControlPanelSpindle
     //yButton1.whenPressed(new IncrememntSpindle()); DNE
     //rbButton1.whenPressed(new ToggleShooterSpeedControl()); DNE
     selectButton1.whenPressed(new InterruptSubsystems(drive, hopper, shooter, intake, climber, spindle, client)); //interrupts all commands by requiring every subsystem
     dPadUp1.whenActive(new ToggleDrivePower(driveFinePower, driveFastPower));
+    dPadDown1.whenActive(new ToggleVisionLight(client));
 
     /**
      * Mechanism Controller Commands
@@ -140,7 +158,7 @@ public class RobotContainer {
     bButton2.whileHeld(new RunIntake(intake, -intakePower)); //Runs intake backwards
     yButton2.whenPressed(new ToggleClimb(climber)); //Toggles Climber assembly up/down
     lbButton2.whileHeld(new RunClimber(climber, climberSpeed)); //Lifts slides up
-    rbButton2.whileHeld(new RunClimber(climber, -climberSpeed)); //Climbs
+    rbButton2.whileHeld(new RunClimber(climber, -.25)); //Climbs
     startButton2.whileHeld(new RunHopper(hopper, -hopperPower)); //Runs hopper manually - but Backwards!
     selectButton2.whenPressed(new InterruptSubsystems(drive, hopper, shooter, intake, climber, spindle, client));
 
@@ -169,6 +187,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TestAuto(drive);
+    return chooser.getSelected();
   }
 }
