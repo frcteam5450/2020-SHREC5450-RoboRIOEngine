@@ -47,7 +47,8 @@ public class Drivetrain extends SubsystemBase {
   rightMotor1CurrentEntry,
   rightMotor2CurrentEntry,
   leftEncEntry,
-  rightEncEntry;
+  rightEncEntry,
+  gyroEntry;
 
   /**
    * Creates a new Drivetrain.
@@ -88,6 +89,8 @@ public class Drivetrain extends SubsystemBase {
 
     leftEncEntry = tab.add("Left Enc Position", 0).getEntry();
     rightEncEntry = tab.add("Right Enc Position", 0).getEntry();
+
+    gyroEntry = tab.add("Gyro Value", 0).getEntry();
   }
 
   /**
@@ -152,6 +155,8 @@ public class Drivetrain extends SubsystemBase {
 
     leftEncEntry.setDouble(getLeftEncPos());
     rightEncEntry.setDouble(getRightEncPos());
+
+    gyroEntry.setDouble(getAngle());
   }
 
   /**

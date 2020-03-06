@@ -44,9 +44,10 @@ public final class Constants {
     driveFastPower = 0.6,
     driveInitialPower = driveFinePower,
     driveRampRate = 1,
-    driveSetAngle = 0,
+    driveSetAngle = -10,
     driveEncConversionFactor = 1.76,
     driveAngleFF = 0,
+    driveAngleThreshold = 0.1,
     driveAngleKP = 0.01;
 
     public static final boolean driveSwappedInitially = false;

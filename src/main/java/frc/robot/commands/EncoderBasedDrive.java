@@ -42,6 +42,7 @@ public class EncoderBasedDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drive.resetGyro();
     initPos1 = drive.getLeftEncPos();
     initPos2 = drive.getRightEncPos();
   }
@@ -72,7 +73,7 @@ public class EncoderBasedDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drive.stop();
-    drive.resetGyro();
+    //drive.resetGyro();
   }
 
   // Returns true when the command should end.

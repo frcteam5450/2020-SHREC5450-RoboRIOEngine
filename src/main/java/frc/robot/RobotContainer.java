@@ -57,7 +57,8 @@ public class RobotContainer {
   defaultAuto = null,
   autoInlineShoot = new InlinePowerPortShoot(drive, shooter, climber, hopper, intake),
   autoCenterShoot = new autoCenterShoot(drive, intake, climber, hopper, shooter),
-  autoMoveOffLine = new EncoderBasedDrive(drive, 30, -.25, .005);
+  autoMoveOffLine = new EncoderBasedDrive(drive, 30, -.25, .005),
+  autoTrenchRunVision = new AutoTrenchRunVisionBased(drive, hopper, client, shooter);
 
   private final SendableChooser<Command> chooser = new SendableChooser<>();
   
@@ -72,6 +73,7 @@ public class RobotContainer {
     chooser.addOption("Inline With Power Port, Shoot", autoInlineShoot);
     chooser.addOption("Centered in Field, Shoot", autoCenterShoot);
     chooser.addOption("Move off Line", autoMoveOffLine);
+    chooser.addOption("Trench Run Shooter, Vision Based", autoTrenchRunVision);
     SmartDashboard.putData("Auto choices", chooser);
   }
 
@@ -139,7 +141,7 @@ public class RobotContainer {
      * Drive Controller Commands
      */
 
-    aButton1.and(visionViable).whenActive(new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, endThreshold));
+    aButton1.and(visionViable).whenActive(new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, endThreshold, 3));
     bButton1.whenPressed(new SwapDrive());
     xButton1.whileHeld(new RunSpindle(spindleSpeed, spindle)); //Freely spins ControlPanelSpindle
     //yButton1.whenPressed(new IncrememntSpindle()); DNE
@@ -188,7 +190,17 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new SequentialCommandGroup(new Delay(2), new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, endThreshold));
-    //return chooser.getSelected();
+    /*return new SequentialCommandGroup(
+      new Delay(2), 
+      new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, driveAngleThreshold, 3),
+      new ParallelCommandGroup(
+        new Shoot(shooter, shooterLowerFF1, shooterUpperFF1),
+        new SequentialCommandGroup(
+          new Delay(1),
+          new RunHopper(hopper, hopperPower)
+        )
+      )
+      );*/
+    return chooser.getSelected();
   }
 }

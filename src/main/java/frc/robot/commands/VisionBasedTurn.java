@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionClient;
+import edu.wpi.first.wpilibj.Timer;
 
 public class VisionBasedTurn extends CommandBase {
 
@@ -20,7 +21,10 @@ public class VisionBasedTurn extends CommandBase {
   angle,
   power,
   kP,
-  endThreshold;
+  endThreshold,
+  endTime;
+
+  private Timer timer;
 
   /**
    * Creates a new VisionBasedTurn.
@@ -31,7 +35,8 @@ public class VisionBasedTurn extends CommandBase {
     double angle,
     double fF,
     double kP,
-    double endThreshold
+    double endThreshold,
+    double endTime
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -44,11 +49,15 @@ public class VisionBasedTurn extends CommandBase {
     this.power = fF;
     this.kP = kP;
     this.endThreshold = endThreshold;
+    this.endTime = endTime;
+
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
   }
 
   public double getOutput(
@@ -73,6 +82,8 @@ public class VisionBasedTurn extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drivetrain.stop();
+    timer.stop();
+    timer.reset();
   }
 
   // Returns true when the command should end.
@@ -81,6 +92,6 @@ public class VisionBasedTurn extends CommandBase {
     double lowerThreshold = angle - (angle * endThreshold);
     double upperThreshold = angle + (angle * endThreshold);
 
-    return lowerThreshold < client.getAngleToTarget() && upperThreshold > client.getAngleToTarget();
+    return (lowerThreshold < client.getAngleToTarget() && upperThreshold > client.getAngleToTarget()) || timer.get() > endTime;
   }
 }
