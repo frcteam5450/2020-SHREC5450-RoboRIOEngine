@@ -46,8 +46,8 @@ public final class Constants {
     driveRampRate = 1,
     driveSetAngle = 0,
     driveEncConversionFactor = 1.76,
-    driveAngleFF = 0.45,
-    driveAngleKP = 0.001;
+    driveAngleFF = 0,
+    driveAngleKP = 0.01;
 
     public static final boolean driveSwappedInitially = false;
 
@@ -67,14 +67,14 @@ public final class Constants {
 
     //doubles
     public static double
-    shooterUpperFF1 = 0.15,
-    shooterLowerFF1 = 0.15,
+    shooterUpperFF1 = 0.61, //0.59 good at edge
+    shooterLowerFF1 = 0.64, //.56 good at edge
 
-    shooterLowerKP1 = 0.000005,
-    shooterUpperKP1 = 0.000005,
+    shooterLowerKP1 = 0.000007,
+    shooterUpperKP1 = 0.000007,
 
-    shooterLowerRPM1 = 2750, 
-    shooterUpperRPM1 = 3200,
+    shooterLowerRPM1 = 3350, //Good trenchrun
+    shooterUpperRPM1 = 3050,
 
     /*shooterUpperFF2 = 0.25,
     shooterLowerFF2 = 0.25,
@@ -123,7 +123,7 @@ public final class Constants {
 
     shooterRampRate = 0,
 
-    shooterDelay = 0.75,
+    shooterDelay = 1,
 
     shootBallCurrent = 20;
     
@@ -141,9 +141,9 @@ public final class Constants {
 
     //Hopper speeds and ramps
     public static final double
-    hopperFF = 0.5,
-    hopperPower = 0.75,
-    hopperRampRate = 0.25,
+    hopperFF = 0.25,
+    hopperPower = 0.5,
+    hopperRampRate = 0.5,
     bindCurrent = 20;
 
     //Hopper set positions

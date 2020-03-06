@@ -27,7 +27,9 @@ public class Shooter extends SubsystemBase {
   upperMotorCurrent,
   lowerMotorCurrent,
   upperMotorVelocity,
-  lowerMotorVelocity;
+  lowerMotorVelocity,
+  upperMotorOutput,
+  lowerMotorOutput;
 
   /**
    * Creates a new Shooter.
@@ -51,6 +53,8 @@ public class Shooter extends SubsystemBase {
     lowerMotorCurrent = tab.add("Lower Motor Current", 0).getEntry();
     upperMotorVelocity = tab.add("Upper Motor RPM", 0).getEntry();
     lowerMotorVelocity = tab.add("Lower Motor RPM", 0).getEntry();
+    upperMotorOutput = tab.add("Upper Motor Output", 0).getEntry();
+    lowerMotorOutput = tab.add("Lower Motor Output", 0).getEntry();
   }
 
   public void setSpeed(
@@ -86,6 +90,8 @@ public class Shooter extends SubsystemBase {
     lowerMotorCurrent.setDouble(getLowerMotorCurrent());
     upperMotorVelocity.setDouble(getVelocityUpperMotor());    
     lowerMotorVelocity.setDouble(getVelocityLowerMotor());
+    upperMotorOutput.setDouble(upperMotor.get());
+    lowerMotorOutput.setDouble(lowerMotor.get());
   }
 
   public double getUpperMotorCurrent() {

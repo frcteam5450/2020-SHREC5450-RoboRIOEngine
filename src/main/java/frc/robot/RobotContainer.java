@@ -170,7 +170,8 @@ public class RobotContainer {
 
     triggerRight2.whileActiveContinuous(
       new ParallelCommandGroup(
-        new ShootRPM(shooter, currentShooterUpperRPM, currentShooterLowerRPM, currentShooterUpperFF, currentShooterLowerFF, currentShooterUpperKP, currentShooterLowerKP, shootBallCurrent),
+        //new ShootRPM(shooter, currentShooterUpperRPM, currentShooterLowerRPM, currentShooterUpperFF, currentShooterLowerFF, currentShooterUpperKP, currentShooterLowerKP, shootBallCurrent),
+        new Shoot(shooter, shooterLowerFF1, shooterUpperFF1),
         new SequentialCommandGroup(
           new Delay(shooterDelay),
           new RunHopper(hopper, hopperPower)
@@ -187,6 +188,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return chooser.getSelected();
+    return new SequentialCommandGroup(new Delay(2), new VisionBasedTurn(drive, client, driveSetAngle, driveAngleFF, driveAngleKP, endThreshold));
+    //return chooser.getSelected();
   }
 }
